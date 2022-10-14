@@ -1,11 +1,27 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
-</template>
+    <TabMenu :model="items" />
+    <router-view/>
 
+    
+</template>
+<script>
+import TabMenu from 'primevue/tabmenu'
+
+export default ({
+  data() {
+    return {
+      items: [
+        { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
+        { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
+        { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
+      ]
+    }
+  },
+  components: {
+    TabMenu
+  }
+})
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
