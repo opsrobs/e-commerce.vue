@@ -1,8 +1,15 @@
 <template>
-    <TabMenu :model="items" />
-    <router-view/>
+  <div>
+    <TabMenu :model="items">
+      <template>
+        <button>a</button>
+        
+    </template>
+    </TabMenu>
+    <router-view />
+  </div>
 
-    
+
 </template>
 <script>
 import TabMenu from 'primevue/tabmenu'
@@ -38,6 +45,13 @@ nav {
 nav a {
   font-weight: bold;
   color: #2c3e50;
+}
+#login {
+  position: absolute;
+  right: 0px;
+  width: 300px;
+  border: 3px solid #73AD21;
+  padding: 10px;
 }
 
 nav a.router-link-exact-active {
