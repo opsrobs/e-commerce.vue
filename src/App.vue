@@ -20,6 +20,7 @@ export default ({
       items: [
         { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
+        { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
       ]
     }

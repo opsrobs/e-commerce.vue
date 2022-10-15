@@ -51,7 +51,6 @@ export default {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     //const user = result.user;
-                    console.log(result)
                     console.log(result._tokenResponse)
                     this.user = result.user.displayName;
                     this.isSignedIn = true
@@ -74,6 +73,7 @@ export default {
                 .then((result) => {
                     //const user = result.user;
                     console.log(result)
+                    console.log(result._tokenResponse)
 
                     this.user = result.user.displayName;
                     this.isSignedIn = true
@@ -86,6 +86,7 @@ export default {
                 .then((result) => {
                     //const user = result.user;
                     console.log(result)
+                    console.log(result._tokenResponse)
 
                     this.user = result.user.displayName;
                     this.isSignedIn = true
