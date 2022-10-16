@@ -1,44 +1,30 @@
 <template>
     <div>
-        <div  id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-50"
-                        src="https://novonegocio.com.br/wp-content/uploads/2011/10/Como-Criar-Patos-1200x801.jpg"
-                        alt="Second slide">
+        <Carousel :value="cars" :numVisible="4" :numScroll="1" :responsiveOptions="responsiveOptions">
+            <template #header>
+                <h2>Basic</h2>
+            </template>
+            <template #item="cars">
+                <div class="car-item">
+                    <div class="car-content">
+                        <div>
+                            <img :src="'https://source.unsplash.com/random/250x250/?beach'" alt="test" />
+                            <img :src="'https://source.unsplash.com/random/250x250/?sexy'" alt="test" />
+                            <img :src="'https://source.unsplash.com/random/250x250/?nsfw'" alt="test" />
+                        </div>
+                        <div>
+                            <div class="car-title">{{cars.data.car}}</div>
+
+                            <div class="car-buttons">
+                                <Button icon="pi pi-search" class="p-button-secondary" />
+                                <Button icon="pi pi-star-fill" class="p-button-secondary" />
+                                <Button icon="pi pi-cog" class="p-button-secondary" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="carousel-item">
-                    <img class="d-block w-50"
-                        src="https://img.freepik.com/fotos-premium/engracado-quacking-patos-na-fazenda_119570-478.jpg?w=2000"
-                        alt="Third slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="https://thumbs.dreamstime.com/b/patos-em-seguido-28469106.jpg"
-                        alt="Third slide">
-                </div>
-            </div>
-            <button  class="carousel-control-prev"  data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </button >
-            <button  class="carousel-control-next"   data-slide="next">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </button >
-            
-            
-        </div>
-
-
-
-
-
-
+            </template>
+        </Carousel>
 
 
         <div>
@@ -56,7 +42,11 @@
 
 <script>
 // import Carousel from 'primevue/carousel'
-import ToggleButton from 'primevue/togglebutton';
+import ToggleButton from 'primevue/togglebutton'
+import Carousel from 'primevue/carousel'
+import Button from 'primevue/button';
+
+
 
 // import Button from 'primevue/button';
 
@@ -69,6 +59,14 @@ export default {
             preco_prod: null,
             Tipo_Produto_id_tipo_Produto: null,
 
+            checked: false,
+            left: false,
+            cars: [
+                {
+                    car: 'https://source.unsplash.com/random/250x250/?beach',
+                    car1: 'https://source.unsplash.com/random/250x250/?sexy'
+                }
+            ],
             responsiveOptions: [
                 {
                     breakpoint: '1024px',
@@ -85,16 +83,9 @@ export default {
                     numVisible: 1,
                     numScroll: 1
                 }
-            ],
-            items: [
-                {
-                    item: "https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png",
-                    item1: "https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png",
-                    item2: 'c'
+            ]
 
-                }
-            ],
-            checked: true
+
 
 
 
@@ -104,22 +95,136 @@ export default {
         check() {
             //alert(this.checked)
         },
-        tt(){
-            ('.carousel').carousel()
+        isleft() {
+            this.left = true;
+            console.log(this.left)
+            this.tt()
+
+        },
+        isRight() {
+            this.left = false;
+            console.log(this.left)
+            this.tt()
+        },
+        tt() {
+
         }
 
     },
     components: {
-        // Carousel,
+        Carousel,
         ToggleButton,
-        // Button
+        Button
     }
 }
 
 </script>
 <style>
-#carousel {
-    border: 1px solid #0000
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    margin: 1em 0;
+    font-family: sans-serif;
+}
+
+.container {
+    position: relative;
+    padding: 15px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.gallery-wrapper {
+    overflow-x: auto;
+}
+
+.arrow-left,
+.arrow-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: 0;
+    font-size: 20px;
+    line-height: 250px;
+    width: 40px;
+    color: #fff;
+    transition: all 600ms ease-in-out;
+    background: linear-gradient(to left, transparent 0%, black 200%);
+    opacity: 0.1;
+    cursor: pointer;
+    border: none;
+}
+
+.arrow-left:hover,
+.arrow-right:hover {
+    opacity: 1;
+}
+
+.arrow-right {
+    right: 0;
+    left: auto;
+    text-align: right;
+    background: linear-gradient(to right, transparent 0%, black 200%);
+}
+
+.gallery {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 15px;
+}
+
+.item {
+    width: 250px;
+    height: 250px;
+    flex-shrink: 0;
+    transition: all 600ms ease-in-out;
+    opacity: 0.5;
+}
+
+.current-item {
+    opacity: 1;
+}
+
+/* This is from w3schools */
+/* 
+https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
+/* Hide scrollbar for Chrome, Safari and Opera */
+.gallery-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.gallery-wrapper {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.cyan {
+    background: cyan;
+}
+
+.deeppink {
+    background: deeppink;
+}
+
+.turquoise {
+    background: turquoise;
+}
+
+.darkblue {
+    background: darkblue;
+}
+
+.purple {
+    background: purple;
 }
 
 .p-togglebutton.p-button {
