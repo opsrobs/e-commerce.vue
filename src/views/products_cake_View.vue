@@ -152,7 +152,7 @@ h1 {
 .container {
     position: relative;
     padding: 15px;
-    max-width: 640px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
