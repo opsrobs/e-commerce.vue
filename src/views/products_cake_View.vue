@@ -1,13 +1,11 @@
 <template >
-    <div>
-        <h1>Fizemos o Carousel funcionar :)</h1>
-
+    <div >
         <div class="container">
             <button @click="isleft()" class="arrow-left control" aria-label="Previous image">◀</button>
             <button @click="isRight()" class="arrow-right control" aria-label="Next Image">▶</button>
             <div class="gallery-wrapper">
                 <div class="gallery">
-                    
+
                     <img src="https://source.unsplash.com/random/250x250/?bakery" alt="Beach Image"
                         class="item current-item">
                     <img src="https://source.unsplash.com/random/250x250/?cookie" alt="Animal Image"
@@ -26,15 +24,29 @@
             </div>
         </div>
         <div>
-
             <row v-for="p in products" :key="p.status">
                 <toggle-button v-model="p.status" :onLabel="p.label" :offLabel="p.label" />
             </row>
+        </div>
+        <!-- TODO: Centralizar os componentes dos cards -->
+        <div class="card-group" v-for="c in cards" :key="c.img">
+            <div class="card">
+                <img class="card-img-top" :src="c.img" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{c.title}}</h5>
+                    <p class="card-text">{{c.body}}</p>
+                    <p class="card-text">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </p>
+                    <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
 
-            
+                </div>
+            </div>
+
         </div>
 
     </div>
+
 
 </template>
 
@@ -77,8 +89,49 @@ export default {
                     status: false,
                     label: 'Baskara'
                 },
+                {
+                    status: false,
+                    label: 'Predo'
+                },
             ],
-           
+            cards: [
+                {
+                    img: "https://source.unsplash.com/random/250x250/",
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
+                },
+                {
+                    img: "https://source.unsplash.com/random/250x250/",
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
+                },
+                {
+                    img: "https://source.unsplash.com/random/250x250/",
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
+                },
+                {
+                    img: "https://source.unsplash.com/random/250x250/",
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
+                },
+                {
+                    img: "https://source.unsplash.com/random/250x250/",
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
+                },
+                {
+                    img: "https://source.unsplash.com/random/250x250/",
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
+                },
+                {
+                    img: "https://source.unsplash.com/random/250x250/",
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
+                },
+            ]
+
         }
     },
     methods: {
@@ -88,18 +141,16 @@ export default {
         },
         isleft() {
             this.left = true;
-            console.log(this.left)
             this.currentItem -= 1
-            this.tt()
+            this.carousel()
 
         },
         isRight() {
             this.left = false;
-            console.log(this.left)
             this.currentItem += 1
-            this.tt()
+            this.carousel()
         },
-        tt() {
+        carousel() {
             const controls = document.querySelectorAll(".control");
             const items = document.querySelectorAll(".item");
             const maxItems = items.length;
@@ -125,7 +176,41 @@ export default {
                     items[this.currentItem].classList.add("current-item");
                 });
             });
+        },
+        x() {
+            const controls = document.querySelectorAll(".control");
+            let currentItem = 0;
+            const items = document.querySelectorAll(".item");
+            const maxItems = items.length;
 
+            controls.forEach((control) => {
+                control.addEventListener("click", (e) => {
+                    let isLeft = e.target.classList.contains("arrow-left");
+
+                    if (isLeft) {
+                        currentItem -= 1;
+                    } else {
+                        currentItem += 1;
+                    }
+
+                    if (currentItem >= maxItems) {
+                        currentItem = 0;
+                    }
+
+                    if (currentItem < 0) {
+                        currentItem = maxItems - 1;
+                    }
+
+                    items.forEach((item) => item.classList.remove("current-item"));
+
+                    items[currentItem].scrollIntoView({
+                        behavior: "smooth",
+                        inline: "center"
+                    });
+
+                    items[currentItem].classList.add("current-item");
+                });
+            });
 
         }
 
@@ -208,10 +293,6 @@ h1 {
     opacity: 1;
 }
 
-/* This is from w3schools */
-/* 
-https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
-/* Hide scrollbar for Chrome, Safari and Opera */
 .gallery-wrapper::-webkit-scrollbar {
     display: none;
 }
@@ -277,5 +358,20 @@ https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
     width: 110px;
     height: 20px;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+
+.card-group {
+    height: 700px;
+    width: 300px;
+    padding: 15px;
+
+    float: left;
+}
+
+
+
+.card-img-top {
+    padding: 3px;
 }
 </style>
