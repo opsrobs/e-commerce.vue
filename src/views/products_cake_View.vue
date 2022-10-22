@@ -1,6 +1,6 @@
 <template >
-    <div >
-        <div class="container">
+    <div>
+        <!-- <div class="container">
             <button @click="isleft()" class="arrow-left control" aria-label="Previous image">◀</button>
             <button @click="isRight()" class="arrow-right control" aria-label="Next Image">▶</button>
             <div class="gallery-wrapper">
@@ -22,7 +22,7 @@
                         class="item current-item">
                 </div>
             </div>
-        </div>
+        </div> -->
         <div>
             <row v-for="p in products" :key="p.status">
                 <toggle-button v-model="p.status" :onLabel="p.label" :offLabel="p.label" />
@@ -167,9 +167,10 @@ export default {
                         this.currentItem = 0;
                     }
                     items.forEach((item) => item.classList.remove("current-item"));
-
+                    
                     items[this.currentItem].scrollIntoView({
-                        behavior: "smooth",
+                        behavior: 'auto',
+                        block: 'center',
                         inline: "center"
                     });
 
@@ -177,42 +178,7 @@ export default {
                 });
             });
         },
-        x() {
-            const controls = document.querySelectorAll(".control");
-            let currentItem = 0;
-            const items = document.querySelectorAll(".item");
-            const maxItems = items.length;
-
-            controls.forEach((control) => {
-                control.addEventListener("click", (e) => {
-                    let isLeft = e.target.classList.contains("arrow-left");
-
-                    if (isLeft) {
-                        currentItem -= 1;
-                    } else {
-                        currentItem += 1;
-                    }
-
-                    if (currentItem >= maxItems) {
-                        currentItem = 0;
-                    }
-
-                    if (currentItem < 0) {
-                        currentItem = maxItems - 1;
-                    }
-
-                    items.forEach((item) => item.classList.remove("current-item"));
-
-                    items[currentItem].scrollIntoView({
-                        behavior: "smooth",
-                        inline: "center"
-                    });
-
-                    items[currentItem].classList.add("current-item");
-                });
-            });
-
-        }
+       
 
     },
     components: {
@@ -234,96 +200,6 @@ h1 {
     font-family: sans-serif;
 }
 
-.container {
-    position: relative;
-    padding: 15px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.gallery-wrapper {
-    overflow-x: auto;
-}
-
-.arrow-left,
-.arrow-right {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: auto;
-    bottom: 0;
-    font-size: 20px;
-    line-height: 250px;
-    width: 40px;
-    color: #fff;
-    transition: all 600ms ease-in-out;
-    background: linear-gradient(to left, transparent 0%, black 200%);
-    opacity: 0.1;
-    cursor: pointer;
-    border: none;
-}
-
-.arrow-left:hover,
-.arrow-right:hover {
-    opacity: 1;
-}
-
-.arrow-right {
-    right: 0;
-    left: auto;
-    text-align: right;
-    background: linear-gradient(to right, transparent 0%, black 200%);
-}
-
-.gallery {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 15px;
-}
-
-.item {
-    width: 250px;
-    height: 250px;
-    flex-shrink: 0;
-    transition: all 600ms ease-in-out;
-    opacity: 0.5;
-}
-
-.current-item {
-    opacity: 1;
-}
-
-.gallery-wrapper::-webkit-scrollbar {
-    display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.gallery-wrapper {
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
-}
-
-.cyan {
-    background: cyan;
-}
-
-.deeppink {
-    background: deeppink;
-}
-
-.turquoise {
-    background: turquoise;
-}
-
-.darkblue {
-    background: darkblue;
-}
-
-.purple {
-    background: purple;
-}
 
 .p-togglebutton.p-button {
     margin-left: 2rem;

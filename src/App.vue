@@ -1,18 +1,22 @@
 <template>
   <div>
-    <TabMenu :model="items">
-      <template>
-        <button>a</button>
-        
-    </template>
-    </TabMenu>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+      
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="/about">About</a>
+          <a class="nav-item nav-link" href="/bolo">Bolos</a>
+          <a class="nav-item nav-link " href="/auth">Login</a>
+        </div>
+      </div>
+    </nav>
     <router-view />
   </div>
 
 
 </template>
 <script>
-import TabMenu from 'primevue/tabmenu'
 
 export default ({
   data() {
@@ -26,11 +30,13 @@ export default ({
     }
   },
   components: {
-    TabMenu
   }
 })
 </script>
 <style>
+:root{
+  --bs-dark-rgb: #080710;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -43,10 +49,15 @@ nav {
   padding: 30px;
 }
 
+#bg {
+  background-color: darkblue;
+}
+
 nav a {
   font-weight: bold;
   color: #2c3e50;
 }
+
 #login {
   position: absolute;
   right: 0px;
@@ -57,5 +68,11 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+
+.bg-dark {
+  color: red;
+
 }
 </style>
