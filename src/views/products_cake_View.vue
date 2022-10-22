@@ -1,39 +1,37 @@
-<template>
+<template >
     <div>
-        <Carousel :value="cars" :numVisible="4" :numScroll="1" :responsiveOptions="responsiveOptions">
-            <template #header>
-                <h2>Basic</h2>
-            </template>
-            <template #item="cars">
-                <div class="car-item">
-                    <div class="car-content">
-                        <div>
-                            <img :src="'https://source.unsplash.com/random/250x250/?beach'" alt="test" />
-                            <img :src="'https://source.unsplash.com/random/250x250/?sexy'" alt="test" />
-                            <img :src="'https://source.unsplash.com/random/250x250/?nsfw'" alt="test" />
-                        </div>
-                        <div>
-                            <div class="car-title">{{cars.data.car}}</div>
+        <h1>Fizemos o Carousel funcionar :)</h1>
 
-                            <div class="car-buttons">
-                                <Button icon="pi pi-search" class="p-button-secondary" />
-                                <Button icon="pi pi-star-fill" class="p-button-secondary" />
-                                <Button icon="pi pi-cog" class="p-button-secondary" />
-                            </div>
-                        </div>
-                    </div>
+        <div class="container">
+            <button @click="isleft()" class="arrow-left control" aria-label="Previous image">◀</button>
+            <button @click="isRight()" class="arrow-right control" aria-label="Next Image">▶</button>
+            <div class="gallery-wrapper">
+                <div class="gallery">
+                    
+                    <img src="https://source.unsplash.com/random/250x250/?bakery" alt="Beach Image"
+                        class="item current-item">
+                    <img src="https://source.unsplash.com/random/250x250/?cookie" alt="Animal Image"
+                        class="item current-item">
+                    <img src="https://source.unsplash.com/random/250x250/?cake" alt="Street Image"
+                        class="item current-item">
+                    <img src="https://source.unsplash.com/random/250x250/?cheescake" alt="Zoo Image"
+                        class="item current-item">
+                    <img src="https://source.unsplash.com/random/250x250/?cakes" alt="Model Image"
+                        class="item current-item">
+                    <img src="https://source.unsplash.com/random/250x250/?coffee" alt="Model Image"
+                        class="item current-item">
+                    <img src="https://source.unsplash.com/random/250x250/?bread" alt="Model Image"
+                        class="item current-item">
                 </div>
-            </template>
-        </Carousel>
-
-
+            </div>
+        </div>
         <div>
 
-            <ToggleButton v-model="checked" @click="check()" />
-            <ToggleButton v-model="checked" @click="check()" />
-            <ToggleButton v-model="checked" @click="check()" />
-            <ToggleButton v-model="checked" @click="check()" />
-            <ToggleButton v-model="checked" @click="check()" />
+            <row v-for="p in products" :key="p.status">
+                <toggle-button v-model="p.status" :onLabel="p.label" :offLabel="p.label" />
+            </row>
+
+            
         </div>
 
     </div>
@@ -43,8 +41,8 @@
 <script>
 // import Carousel from 'primevue/carousel'
 import ToggleButton from 'primevue/togglebutton'
-import Carousel from 'primevue/carousel'
-import Button from 'primevue/button';
+// import Carousel from 'primevue/carousel'
+// import Button from 'primevue/button';
 
 
 
@@ -58,63 +56,82 @@ export default {
             nome_prod: '',
             preco_prod: null,
             Tipo_Produto_id_tipo_Produto: null,
+            currentItem: 1,
 
             checked: false,
             left: false,
-            cars: [
+            products: [
                 {
-                    car: 'https://source.unsplash.com/random/250x250/?beach',
-                    car1: 'https://source.unsplash.com/random/250x250/?sexy'
-                }
+                    status: false,
+                    label: 'Batata'
+                },
+                {
+                    status: true,
+                    label: 'Marshmello'
+                },
+                {
+                    status: false,
+                    label: 'Alok'
+                },
+                {
+                    status: false,
+                    label: 'Baskara'
+                },
             ],
-            responsiveOptions: [
-                {
-                    breakpoint: '1024px',
-                    numVisible: 3,
-                    numScroll: 3
-                },
-                {
-                    breakpoint: '600px',
-                    numVisible: 2,
-                    numScroll: 2
-                },
-                {
-                    breakpoint: '480px',
-                    numVisible: 1,
-                    numScroll: 1
-                }
-            ]
-
-
-
-
-
+           
         }
     },
     methods: {
         check() {
+            this.currentItem
             //alert(this.checked)
         },
         isleft() {
             this.left = true;
             console.log(this.left)
+            this.currentItem -= 1
             this.tt()
 
         },
         isRight() {
             this.left = false;
             console.log(this.left)
+            this.currentItem += 1
             this.tt()
         },
         tt() {
+            const controls = document.querySelectorAll(".control");
+            const items = document.querySelectorAll(".item");
+            const maxItems = items.length;
+
+            controls.forEach((control) => {
+                control.addEventListener("click", (e) => {
+                    console.log(e)
+
+
+                    if (this.currentItem < 0) {
+                        this.currentItem = maxItems - 1;
+                    }
+                    if (this.currentItem >= maxItems) {
+                        this.currentItem = 0;
+                    }
+                    items.forEach((item) => item.classList.remove("current-item"));
+
+                    items[this.currentItem].scrollIntoView({
+                        behavior: "smooth",
+                        inline: "center"
+                    });
+
+                    items[this.currentItem].classList.add("current-item");
+                });
+            });
+
 
         }
 
     },
     components: {
-        Carousel,
         ToggleButton,
-        Button
     }
 }
 
@@ -235,7 +252,7 @@ https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
 .p-togglebutton.p-button.p-highlight {
     background-color: #413b57a2;
     border: none;
-    width: 90px;
+    width: 110px;
     height: 20px;
 }
 
@@ -257,7 +274,7 @@ https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
     background: #ffffff;
     border: 1px solid #ced4da;
     color: #495057;
-    width: 90px;
+    width: 110px;
     height: 20px;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
