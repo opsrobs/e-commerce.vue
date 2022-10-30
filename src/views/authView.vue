@@ -6,31 +6,38 @@
                 <div class="shape"></div>
                 <div class="shape"></div>
             </div>
-            <form>
-                <h2 v-if="user">{{ user }}</h2>
-                <h3 v-else>Login Here</h3>
+            <form @submit.prevent="login()" >
+                <h3 v-if="isVisible">{{ checkTittle() }}</h3>
+
+                <label class="signup" v-if="!isVisible" >Nome</label>
+                <input class="signup" v-if="!isVisible" type="text" v-model="user.first_name" required placeholder="Nome" id="nome">
+
+                <label  v-if="!isVisible" >Sobremome</label>
+                <input  v-if="!isVisible" type="text" v-model="user.last_name" required placeholder="Sobrenome" id="sobrenome">
+
 
                 <label for="username">Username</label>
-                <input type="text" placeholder="Email or Phone" id="username">
+                <input type="text" v-model="user.username" required placeholder="Email or User" id="username">
 
                 <label for="password">Password</label>
-                <input type="password" placeholder="Password" id="password">
+                <input type="password" v-model="user.password" required placeholder="Password" id="password">
 
-                <button>Log In</button>
+                <input class="login-submit" type="submit" value="Login">
                 <div class="social">
-                    <div @click="handleLogingGoogle" class="go"><i class="fab fa-google"></i> Google</div>
-                    <div @click="handleLogingGitHub" class="fb"><i class="fab fa-github"></i> Github</div>
-                    <div @click="handleLogingTwitter" class="fb"><i class="fab fa-twitter"></i> Twitter</div>
+                    <div v-show="isVisible" @click="handleLogingGoogle" class="go"><i class="fab fa-google"></i> Google</div>
+                    <div v-show="isVisible" @click="handleLogingGitHub" class="fb"><i class="fab fa-github"></i> Github</div>
+                    <div v-show="isVisible" @click="handleLogingTwitter" class="fb"><i class="fab fa-twitter"></i> Twitter</div>
                 </div>
             </form>
         </body>
-        
+
 
 
     </div>
 </template>
 <script>
 import firebaseConfig from '../../firebaseConfig';
+import axios from 'axios';
 import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, TwitterAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 firebaseConfig
@@ -43,8 +50,15 @@ const auth = getAuth();
 export default {
     data() {
         return {
-            user: '',
-            isSignedIn: false,
+            user: {
+                first_name: '',
+                last_name: '',
+                username: '',
+                password: ''
+            },
+            isVisible: true,
+            //=====================
+
         }
     }, methods: {
         handleLogingGoogle() {
@@ -52,11 +66,32 @@ export default {
                 .then((result) => {
                     //const user = result.user;
                     console.log(result._tokenResponse)
-                    this.user = result.user.displayName;
-                    this.isSignedIn = true
+
+                    this.user.first_name = result._tokenResponse.firstName
+                    this.user.last_name = result._tokenResponse.lastName
+                    this.user.username = result._tokenResponse.email
+                    // verificar se há ou não username. 
+                    // Caso não haja, criar método para validar quak campo deve ser apresentado
+
+                    //this.user = result.user.displayName;
+                    this.isVisible = false
+                    alert(this.checkTittle())
                 }).catch((error) => {
                     console.log(error)
                 });
+        },
+        login() {
+            axios.get('http://localhost:8080/e-commerce',
+                {
+                    auth: {
+                        username: this.user.username,
+                        password: this.user.password
+                    },
+                })
+                .then(resp => {
+                    this.$router.push('/bolo')
+                    console.log(resp.data)
+                })
         },
         handleSignOut() {
             const auth = getAuth();
@@ -93,6 +128,9 @@ export default {
                 }).catch((error) => {
                     console.log(error)
                 });
+        },
+        checkTittle(){
+            return this.isVisible ? 'Login Here' : 'Create account' 
         }
     },
     components: {
@@ -114,9 +152,22 @@ body {
     background-color: #080710;
 }
 
+.login-submit,
+input[type="button"],
+input[type="submit"] {
+    display: block;
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: rgb(177, 147, 147);
+    border-radius: 25px;
+    width: 45%
+}
+
 .background {
     width: 430px;
-    height: 520px;
+    height: auto;
     position: absolute;
     transform: translate(-50%, -50%);
     left: 50%;
@@ -146,7 +197,7 @@ body {
 }
 
 form {
-    height: 520px;
+    height: auto;
     width: 400px;
     background-color: rgba(255, 255, 255, 0.13);
     position: absolute;
@@ -177,7 +228,7 @@ form h3 {
 
 label {
     display: block;
-    margin-top: 30px;
+    margin-top: 10px;
     font-size: 16px;
     font-weight: 500;
 }
@@ -192,7 +243,13 @@ input {
     margin-top: 8px;
     font-size: 14px;
     font-weight: 300;
+    
 }
+/* .signup{
+    display: flex;
+    width: 40%;
+    height: 35px;
+} */
 
 ::placeholder {
     color: #e5e5e5;
