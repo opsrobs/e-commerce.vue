@@ -6,14 +6,16 @@
                 <div class="shape"></div>
                 <div class="shape"></div>
             </div>
-            <form @submit.prevent="login()" >
+            <form @submit.prevent="login()">
                 <h3 v-if="isVisible">{{ checkTittle() }}</h3>
 
-                <label class="signup" v-if="!isVisible" >Nome</label>
-                <input class="signup" v-if="!isVisible" type="text" v-model="user.first_name" required placeholder="Nome" id="nome">
+                <label class="signup" v-if="!isVisible">Nome</label>
+                <input class="signup" v-if="!isVisible" type="text" v-model="user.first_name" required
+                    placeholder="Nome" id="nome">
 
-                <label  v-if="!isVisible" >Sobremome</label>
-                <input  v-if="!isVisible" type="text" v-model="user.last_name" required placeholder="Sobrenome" id="sobrenome">
+                <label v-if="!isVisible">Sobremome</label>
+                <input v-if="!isVisible" type="text" v-model="user.last_name" required placeholder="Sobrenome"
+                    id="sobrenome">
 
 
                 <label for="username">Username</label>
@@ -22,14 +24,19 @@
                 <label for="password">Password</label>
                 <input type="password" v-model="user.password" required placeholder="Password" id="password">
                 <label v-if="!isVisible" for="password">Confirm password</label>
-                <input v-if="!isVisible" type="password" v-model="new_pass" required placeholder="Confirm password" id="password">
+                <input v-if="!isVisible" type="password" v-model="new_pass" required placeholder="Confirm password"
+                    id="password">
                 <span class="review-password" v-if="!isValid">As senhas não conferem</span>
 
-                <input @click="validadePassword()" class="login-submit" type="submit" value="Login">
+                <input v-show="isVisible" class="login-submit" type="submit" value="Login">
+                <input @click="new_user()" v-if="!isVisible" class="create-account" type="submit" value="Create">
                 <div class="social">
-                    <div v-show="isVisible" @click="handleLogingGoogle" class="go"><i class="fab fa-google"></i> Google</div>
-                    <div v-show="isVisible" @click="handleLogingGitHub" class="fb"><i class="fab fa-github"></i> Github</div>
-                    <div v-show="isVisible" @click="handleLogingTwitter" class="fb"><i class="fab fa-twitter"></i> Twitter</div>
+                    <div v-show="isVisible" @click="handleLogingGoogle" class="go"><i class="fab fa-google"></i> Google
+                    </div>
+                    <div v-show="isVisible" @click="handleLogingGitHub" class="fb"><i class="fab fa-github"></i> Github
+                    </div>
+                    <div v-show="isVisible" @click="handleLogingTwitter" class="fb"><i class="fab fa-twitter"></i>
+                        Twitter</div>
                 </div>
             </form>
         </body>
@@ -53,15 +60,15 @@ const auth = getAuth();
 export default {
     data() {
         return {
-            new_pass:'',
-            isValid:true,
+            new_pass: '',
+            isValid: true,
             user: {
                 first_name: '',
                 last_name: '',
                 username: '',
                 password: ''
             },
-            isVisible: false,
+            isVisible: true,
             //=====================
 
         }
@@ -85,13 +92,13 @@ export default {
                     console.log(error)
                 });
         },
-        validadePassword(){
-            if(this.user.password === this.new_pass && this.new_pass.length === 0){
+        validadePassword() {
+            if (this.user.password === this.new_pass && this.new_pass.length === 0) {
                 return this.isValid
-            }else if (this.user.password != this.new_pass){
-                    return this.isValid = false
+            } else if (this.user.password != this.new_pass) {
+                return this.isValid = false
             } else
-            return this.isValid = true
+                return this.isValid = true
         },
         login() {
             axios.get('http://localhost:8080/e-commerce',
@@ -105,6 +112,17 @@ export default {
                     this.$router.push('/bolo')
                     console.log(resp.data)
                 })
+        },
+        new_user() {
+            if (this.isValid) {
+                axios.post('http://localhost:8080/e-commerce/new-user',
+                    this.user)
+                    .then(resp => {
+                        this.$router.push('/bolo')
+                        console.log(resp.data)
+                    })
+
+            }
         },
         handleSignOut() {
             const auth = getAuth();
@@ -142,8 +160,8 @@ export default {
                     console.log(error)
                 });
         },
-        checkTittle(){
-            return this.isVisible ? 'Login Here' : 'Create account' 
+        checkTittle() {
+            return this.isVisible ? 'Login Here' : 'Create account'
         }
     },
     components: {
@@ -158,9 +176,11 @@ export default {
     margin: 0;
     box-sizing: border-box;
 }
+
 body {
     background-color: #080710;
 }
+
 .login-submit,
 input[type="button"],
 input[type="submit"] {
@@ -174,6 +194,7 @@ input[type="submit"] {
     border-radius: 25px;
     width: 45%
 }
+
 .background {
     width: 430px;
     height: auto;
@@ -182,18 +203,21 @@ input[type="submit"] {
     left: 50%;
     top: 50%;
 }
+
 .background .shape {
     height: 200px;
     width: 200px;
     position: absolute;
     border-radius: 50%;
 }
+
 .shape:first-child {
     background: linear-gradient(#1845ad,
             #23a2f6);
     left: -80px;
     top: -80px;
 }
+
 .shape:last-child {
     background: linear-gradient(to right,
             #ea1538,
@@ -201,6 +225,7 @@ input[type="submit"] {
     right: -30px;
     bottom: -80px;
 }
+
 form {
     height: auto;
     width: 400px;
@@ -215,6 +240,7 @@ form {
     box-shadow: 0 0 40px rgba(8, 7, 16, 1);
     padding: 50px 35px;
 }
+
 form * {
     font-family: 'Poppins', sans-serif;
     color: #ffffff;
@@ -222,18 +248,21 @@ form * {
     outline: none;
     border: none;
 }
+
 form h3 {
     font-size: 32px;
     font-weight: 500;
     line-height: 42px;
     text-align: center;
 }
+
 label {
     display: block;
     margin-top: 10px;
     font-size: 16px;
     font-weight: 500;
 }
+
 input {
     display: block;
     height: 50px;
@@ -244,8 +273,9 @@ input {
     margin-top: 8px;
     font-size: 14px;
     font-weight: 300;
-   
+
 }
+
 /* .signup{
     display: flex;
     width: 40%;
@@ -254,10 +284,12 @@ input {
 ::placeholder {
     color: #e5e5e5;
 }
+
 .social {
     margin-top: 30px;
     display: flex;
 }
+
 .social div {
     background: red;
     width: 150px;
@@ -267,18 +299,21 @@ input {
     color: #eaf0fb;
     text-align: center;
 }
+
 .social div:hover {
     background-color: rgba(255, 255, 255, 0.47);
     border-radius: 10%
 }
+
 .social .fb {
     margin-left: 25px;
 }
+
 .social i {
     margin-right: 4px;
 }
 
-.review-password{
+.review-password {
     display: flex;
     padding-top: 0.5rem;
     padding-left: 0.5rem;
@@ -288,14 +323,28 @@ input {
     color: #ea1538;
 
     animation: view .3s;
-    
+
 }
 
 @keyframes view {
-    0% {margin-left: 0;}
-    25% {margin-left: 7px;}
-    50% {margin-left: 0;}
-    75% {margin-left: -7px;}
-    100% {margin-left: 0;}
+    0% {
+        margin-left: 0;
+    }
+
+    25% {
+        margin-left: 7px;
+    }
+
+    50% {
+        margin-left: 0;
+    }
+
+    75% {
+        margin-left: -7px;
+    }
+
+    100% {
+        margin-left: 0;
+    }
 }
 </style>
