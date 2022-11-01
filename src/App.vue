@@ -52,7 +52,7 @@ nav {
 }
 nav a {
   font-weight: bold;
-  color:#ea1538;
+  color:purple;
   padding: 10px 20px;
 }
 #login {
