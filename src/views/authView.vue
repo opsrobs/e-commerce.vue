@@ -66,7 +66,13 @@ export default {
                 first_name: '',
                 last_name: '',
                 username: '',
-                password: ''
+                password: '',
+                roles: [
+                {
+                    roleId: 1,
+                    roleName: "ROLE_USER"
+                }
+            ]
             },
             isVisible: true,
             //=====================
@@ -120,7 +126,8 @@ export default {
                     .then(resp => {
                         this.$router.push('/bolo')
                         console.log(resp.data)
-                    })
+                    }).catch(resp => alert(resp.body))
+                    
 
             }
         },
