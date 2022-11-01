@@ -21,7 +21,6 @@
 
                 <label for="password">Password</label>
                 <input type="password" v-model="user.password" required placeholder="Password" id="password">
-                <label>{{user.password + new_pass}}</label>
                 <label v-if="!isVisible" for="password">Confirm password</label>
                 <input v-if="!isVisible" type="password" v-model="new_pass" required placeholder="Confirm password" id="password">
                 <span class="review-password" v-if="!isValid">As senhas não conferem</span>
