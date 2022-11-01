@@ -21,8 +21,12 @@
 
                 <label for="password">Password</label>
                 <input type="password" v-model="user.password" required placeholder="Password" id="password">
+                <label>{{user.password + new_pass}}</label>
+                <label v-if="!isVisible" for="password">Confirm password</label>
+                <input v-if="!isVisible" type="password" v-model="new_pass" required placeholder="Confirm password" id="password">
+                <span class="review-password" v-if="!isValid">As senhas não conferem</span>
 
-                <input class="login-submit" type="submit" value="Login">
+                <input @click="validadePassword()" class="login-submit" type="submit" value="Login">
                 <div class="social">
                     <div v-show="isVisible" @click="handleLogingGoogle" class="go"><i class="fab fa-google"></i> Google</div>
                     <div v-show="isVisible" @click="handleLogingGitHub" class="fb"><i class="fab fa-github"></i> Github</div>
@@ -50,13 +54,15 @@ const auth = getAuth();
 export default {
     data() {
         return {
+            new_pass:'',
+            isValid:true,
             user: {
                 first_name: '',
                 last_name: '',
                 username: '',
                 password: ''
             },
-            isVisible: true,
+            isVisible: false,
             //=====================
 
         }
@@ -79,6 +85,14 @@ export default {
                 }).catch((error) => {
                     console.log(error)
                 });
+        },
+        validadePassword(){
+            if(this.user.password === this.new_pass && this.new_pass.length === 0){
+                return this.isValid
+            }else if (this.user.password != this.new_pass){
+                    return this.isValid = false
+            } else
+            return this.isValid = true
         },
         login() {
             axios.get('http://localhost:8080/e-commerce',
@@ -263,5 +277,26 @@ input {
 }
 .social i {
     margin-right: 4px;
+}
+
+.review-password{
+    display: flex;
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
+
+    font-size: 10px;
+    font-style: normal;
+    color: #ea1538;
+
+    animation: view .3s;
+    
+}
+
+@keyframes view {
+    0% {margin-left: 0;}
+    25% {margin-left: 7px;}
+    50% {margin-left: 0;}
+    75% {margin-left: -7px;}
+    100% {margin-left: 0;}
 }
 </style>
