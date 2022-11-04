@@ -5,6 +5,7 @@ import { useToast } from "primevue/usetoast";
 import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
+import Sidebar from 'primevue/sidebar'
 import TabMenu from 'primevue/tabmenu'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice';
@@ -24,6 +25,7 @@ apps.use(TabMenu)
 apps.use(ConfirmationService)
 apps.use(PrimeVue)
 apps.use(ToastService)
+apps.use(Sidebar)
 apps.mount('#app')
 
 export default defineComponent({
