@@ -24,6 +24,7 @@
                 <label for="password">Password</label>
                 <input type="password" v-model="user.password" required placeholder="Password" id="password">
                 <label v-if="!isVisible" for="password">Confirm password</label>
+                <a>{{user.password+' '+ new_pass}}</a>
                 <input v-if="!isVisible" type="password" v-model="new_pass" required placeholder="Confirm password"
                     id="password">
                 <span class="review-password" v-if="!isValid">As senhas não conferem</span>
@@ -88,10 +89,7 @@ export default {
                     this.user.first_name = result._tokenResponse.firstName
                     this.user.last_name = result._tokenResponse.lastName
                     this.user.username = result._tokenResponse.email
-                    // verificar se há ou não username. 
-                    // Caso não haja, criar método para validar quak campo deve ser apresentado
-
-                    //this.user = result.user.displayName;
+                    
                     this.isVisible = false
                     alert(this.checkTittle())
                 }).catch((error) => {
@@ -120,7 +118,8 @@ export default {
                 })
         },
         new_user() {
-            if (this.isValid) {
+            alert(this.isValid)
+            if (this.validadePassword) {
                 axios.post('http://localhost:8080/e-commerce/new-user',
                     this.user)
                     .then(resp => {
@@ -145,11 +144,14 @@ export default {
             signInWithPopup(auth, providerTwitter)
                 .then((result) => {
                     //const user = result.user;
+
+                    this.user.first_name = result._tokenResponse.fullName
+                    // this.user.last_name = result._tokenResponse.lastName
+                    this.user.username = result._tokenResponse.screenName
                     console.log(result)
                     console.log(result._tokenResponse)
+                    this.isVisible = false
 
-                    this.user = result.user.displayName;
-                    this.isSignedIn = true
                 }).catch((error) => {
                     console.log(error)
                 });
@@ -161,8 +163,13 @@ export default {
                     console.log(result)
                     console.log(result._tokenResponse)
 
-                    this.user = result.user.displayName;
-                    this.isSignedIn = true
+                    this.user.first_name = result._tokenResponse.displayName
+
+                    // this.user.last_name = result._tokenResponse.lastName
+                    this.user.username = result._tokenResponse.screenName
+
+                    this.isVisible = false
+
                 }).catch((error) => {
                     console.log(error)
                 });
