@@ -25,7 +25,7 @@
         </div> -->
         <div>
             <row v-for="p in categories" :key="p.id_tipo_produto">
-                <toggle-button v-model="p.id_tipo_produto" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
+                <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
             </row>
         </div>
         <!-- TODO: Centralizar os componentes dos cards -->
@@ -33,8 +33,8 @@
             <div class="card">
                 <img class="card-img-top" :src="c.img" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">{{ c.title }}</h5>
-                    <p class="card-text">{{ c.body }}</p>
+                    <h5 class="card-title">{{ c.nom_produto }}</h5>
+                    <p class="card-text">{{ c.descricao_produto }}</p>
                     <p class="card-text">
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
@@ -73,43 +73,7 @@ export default {
             checked: false,
             left: false,
             categories: [],
-            cards: [
-                {
-                    img: "https://source.unsplash.com/random/250x250/",
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
-                },
-                {
-                    img: "https://source.unsplash.com/random/250x250/",
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
-                },
-                {
-                    img: "https://source.unsplash.com/random/250x250/",
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
-                },
-                {
-                    img: "https://source.unsplash.com/random/250x250/",
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
-                },
-                {
-                    img: "https://source.unsplash.com/random/250x250/",
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
-                },
-                {
-                    img: "https://source.unsplash.com/random/250x250/",
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
-                },
-                {
-                    img: "https://source.unsplash.com/random/250x250/",
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur iaculis iaculis ipsum, id tincidunt lorem pellentesque varius. Interdum et malesuada fames ac ante ipsum primis."
-                },
-            ]
+            cards: []
 
         }
     },
@@ -158,18 +122,25 @@ export default {
             });
         },
         get_categories() {
-            
+
 
         }
 
 
     },
-    mounted(){
+    mounted() {
         axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
+            .then(resp => {
+                this.categories = resp.data
+                console.log(resp.data)
+
+            }),
+
+            axios.get("https://run.mocky.io/v3/4e8714aa-6305-4aad-81a1-8a5ca203355d")
                 .then(resp => {
-                    this.categories = resp.data
+                    this.cards = resp.data
                     console.log(resp.data)
-                    
+
                 })
     },
     components: {
