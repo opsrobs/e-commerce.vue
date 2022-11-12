@@ -34,7 +34,8 @@
                 <img class="card-img-top" :src="c.img" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">{{ c.nom_produto }}</h5>
-                    <p class="card-text">{{ c.descricao_produto }}</p>
+                    <p class="card-text">
+                        {{ lengthDescription(c.descricao_produto)}}</p>
                     <p class="card-text">
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
@@ -121,9 +122,12 @@ export default {
                 });
             });
         },
-        get_categories() {
-
-
+        lengthDescription(text) {
+            if(text.length< 5){
+                return text
+            }else{
+               return text.substring(0,8)+"..."               
+            }
         }
 
 
@@ -200,7 +204,7 @@ h1 {
 
 
 .card-group {
-    height: 700px;
+    height: auto; /* alterar para 500px caso os cards fiquem de tamanhos diferentes */  
     width: 300px;
     padding: 15px;
 
