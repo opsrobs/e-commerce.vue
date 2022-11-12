@@ -24,8 +24,8 @@
             </div>
         </div> -->
         <div>
-            <row v-for="p in products" :key="p.status">
-                <toggle-button v-model="p.status" :onLabel="p.label" :offLabel="p.label" />
+            <row v-for="p in categories" :key="p.id_tipo_produto">
+                <toggle-button v-model="p.id_tipo_produto" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
             </row>
         </div>
         <!-- TODO: Centralizar os componentes dos cards -->
@@ -33,8 +33,8 @@
             <div class="card">
                 <img class="card-img-top" :src="c.img" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">{{c.title}}</h5>
-                    <p class="card-text">{{c.body}}</p>
+                    <h5 class="card-title">{{ c.title }}</h5>
+                    <p class="card-text">{{ c.body }}</p>
                     <p class="card-text">
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
@@ -53,8 +53,8 @@
 <script>
 // import Carousel from 'primevue/carousel'
 import ToggleButton from 'primevue/togglebutton'
-// import Carousel from 'primevue/carousel'
-// import Button from 'primevue/button';
+import axios from 'axios';
+
 
 
 
@@ -72,28 +72,7 @@ export default {
 
             checked: false,
             left: false,
-            products: [
-                {
-                    status: false,
-                    label: 'Batata'
-                },
-                {
-                    status: true,
-                    label: 'Marshmello'
-                },
-                {
-                    status: false,
-                    label: 'Alok'
-                },
-                {
-                    status: false,
-                    label: 'Baskara'
-                },
-                {
-                    status: false,
-                    label: 'Predo'
-                },
-            ],
+            categories: [],
             cards: [
                 {
                     img: "https://source.unsplash.com/random/250x250/",
@@ -167,7 +146,7 @@ export default {
                         this.currentItem = 0;
                     }
                     items.forEach((item) => item.classList.remove("current-item"));
-                    
+
                     items[this.currentItem].scrollIntoView({
                         behavior: 'auto',
                         block: 'center',
@@ -178,8 +157,20 @@ export default {
                 });
             });
         },
-       
+        get_categories() {
+            
 
+        }
+
+
+    },
+    mounted(){
+        axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
+                .then(resp => {
+                    this.categories = resp.data
+                    console.log(resp.data)
+                    
+                })
     },
     components: {
         ToggleButton,
