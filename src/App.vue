@@ -1,22 +1,30 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-      
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href="/about">About</a>
-          <a class="nav-item nav-link" href="/bolo">Bolos</a>
-          <a class="nav-item nav-link " href="/auth">Login</a>
-        </div>
+
+    <body>
+      <div class="hero">
+        <nav>
+          <h2 class="logo">John <span> Doe </span> </h2>
+          <ul>
+            <router-link to="/">Home</router-link>
+            <router-link to="/about">About</router-link>
+            <router-link to="/bolo">Bolo</router-link>
+            <router-link to="/auth">Login</router-link>
+          </ul>
+          <Sidebar v-model:visible="visibleLeft" position="right">
+            Produto
+          </Sidebar>
+          <span class="material-icons md-48" @click="visibleLeft = true">shopping_cart</span>
+          <!--<button type="button">Subscribe</button>-->
+        </nav>
       </div>
-    </nav>
+    </body>
     <router-view />
   </div>
-
-
 </template>
 <script>
+import Sidebar from 'primevue/sidebar';
+import 'primeicons/primeicons.css';
 
 export default ({
   data() {
@@ -26,17 +34,34 @@ export default ({
         { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
         { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
-      ]
+      ],
+      visibleLeft: false
     }
   },
   components: {
+    Sidebar
   }
 })
 </script>
 <style>
-:root{
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  color: #ffffff;
+}
+:root {
   --bs-dark-rgb: #080710;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -50,12 +75,13 @@ nav {
 }
 
 #bg {
-  background-color: darkblue;
+  background-color: purple;
 }
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
 }
 
 #login {
@@ -67,12 +93,70 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #ffffff;
 }
-
 
 .bg-dark {
   color: red;
+}
 
+.hero {
+  height: min-content;
+  width: 100%;
+  background-color: purple;
+  background-size: auto;
+  background-position: top;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 40px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.logo {
+  color: white;
+  font-size: 28px;
+}
+
+span {
+  color: #ea1538;
+}
+
+nav ul,
+router-link {
+  list-style-type: none;
+  display: inline;
+
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  color: #ea1538;
+  transition: .3s;
+}
+
+button {
+  border: none;
+  background: white;
+  padding: 12px 30px;
+  border-radius: 30px;
+  color: #ea1538;
+  font-weight: bold;
+  font-size: 15px;
+  transition: .4s;
+}
+
+button:hover {
+  transform: scale(1.3);
+  cursor: pointer;
 }
 </style>
