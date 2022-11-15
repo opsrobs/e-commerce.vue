@@ -4,7 +4,7 @@
     <body>
       <div class="hero">
         <nav>
-          <h2 class="logo">John <span> Doe </span> </h2>
+          <h2 class="logo">John <span> Doe </span> Contagem de Produtos {{productsCount}}</h2>
           <ul>
             <router-link to="/">Home</router-link>
             <router-link to="/about">About</router-link>
@@ -12,9 +12,14 @@
             <router-link to="/auth">Login</router-link>
           </ul>
           <Sidebar v-model:visible="visibleLeft" position="right">
-            Produto
+          <h2>Produto</h2>
+          <ul  v-for= "p in model.shopInfo.products" :key="p.id_Produto">
+          <li>
+            {{p.nom_produto}}
+          </li>
+          </ul>
           </Sidebar>
-          <span class="material-icons md-48" @click="visibleLeft = true">shopping_cart</span>
+          <span class="material-icons" @click="abrirSidenav">shopping_cart</span>
           <!--<button type="button">Subscribe</button>-->
         </nav>
       </div>
@@ -25,22 +30,40 @@
 <script>
 import Sidebar from 'primevue/sidebar';
 import 'primeicons/primeicons.css';
+import { defineComponent, reactive, ref} from 'vue';
+import model from './states/chartstate';
 
-export default ({
-  data() {
-    return {
-      items: [
+export default defineComponent({
+  methods:{
+    abrirSidenav(){
+      this.visibleLeft = true;console.log("deveria funcionar")
+    }
+  },
+  setup() {
+    const items=reactive (
+      [
         { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
         { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
-      ],
-      visibleLeft: false
+      ]
+      )
+      const visibleLeft=ref (
+        false
+      )
+    return {
+      model,
+      items,
+      visibleLeft
     }
   },
   components: {
     Sidebar
-  }
+  },
+  computed: {
+        productsCount(){
+          return this.model.shopInfo.products.length
+    }}
 })
 </script>
 <style>
