@@ -4,11 +4,11 @@
     <body>
       <div class="hero">
         <nav>
-          <h2 class="logo">John <span> Doe </span> Contagem de Produtos {{productsCount}}</h2>
+          <h2 class="logo"><span> Doceria da Alegria </span></h2>
           <ul>
-            <router-link to="/">Home</router-link>
+            <router-link to="/">Inicio</router-link>
             <router-link to="/about">About</router-link>
-            <router-link to="/bolo">Bolo</router-link>
+            <router-link to="/bolo">Produtos</router-link>
             <router-link to="/auth">Login</router-link>
           </ul>
           <Sidebar v-model:visible="visibleLeft" position="right">
@@ -71,7 +71,7 @@ export default defineComponent({
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 28px;  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -79,10 +79,10 @@ export default defineComponent({
   word-wrap: normal;
   white-space: nowrap;
   direction: ltr;
-  color: #ffffff;
+  color: #d4a373;
 }
 :root {
-  --bs-dark-rgb: #080710;
+  --bs-dark-rgb: #fff1e6;
 }
 
 #app {
@@ -98,13 +98,14 @@ nav {
 }
 
 #bg {
-  background-color: purple;
+  background-color: #CCD5AE;
 }
 
 nav a {
   font-weight: bold;
-  color: rgb(255, 255, 255);
+  color: #d4a373;
   padding: 10px 20px;
+  text-decoration:none;
 }
 
 #login {
@@ -116,17 +117,18 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #ffffff;
+  color: #7f5539;
+  
 }
 
 .bg-dark {
-  color: red;
+  color: #d4a373;
 }
 
 .hero {
   height: min-content;
   width: 100%;
-  background-color: purple;
+  background-color: #e9edc9;
   background-size: auto;
   background-position: top;
 }
@@ -146,24 +148,24 @@ nav {
 }
 
 span {
-  color: #ea1538;
+  color: #d4a373;
+  font-weight: bold;
 }
 
 nav ul,
 router-link {
   list-style-type: none;
   display: inline;
-
 }
 
 nav ul li a {
-  color: white;
+  color: #d4a373;
   text-decoration: none;
   font-weight: bold;
 }
 
 nav ul li a:hover {
-  color: #ea1538;
+  color: #d4a373;
   transition: .3s;
 }
 
@@ -182,4 +184,6 @@ button:hover {
   transform: scale(1.3);
   cursor: pointer;
 }
+
+
 </style>
