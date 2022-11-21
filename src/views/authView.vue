@@ -185,7 +185,7 @@ export default {
 }
 
 body {
-    background-color: #080710;
+    background-color: #FEFAE0;
 }
 
 .login-submit,
