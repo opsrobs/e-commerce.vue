@@ -74,7 +74,7 @@ export default defineComponent({
 }
 
 .buy {
-  background-color: #d4a373;
+  background-color: #2c3e50;
   color: #CCD5AE;
   display: absolute;
   margin-left: 55px;
