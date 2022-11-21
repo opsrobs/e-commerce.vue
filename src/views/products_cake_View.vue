@@ -1,10 +1,10 @@
 <template >
     <div>
-        <div>
+        <!-- <div>
             <row v-for="p in model.categories" :key="p.id_tipo_produto">
                 <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
             </row>
-        </div>
+        </div> -->
         <!-- TODO: Centralizar os componentes dos cards -->
         <div class="card-group" v-for="c in model.cards" :key="c.img">
             <div class="card">
@@ -32,7 +32,7 @@
 
 <script>
 // import Carousel from 'primevue/carousel'
-import ToggleButton from 'primevue/togglebutton'
+// import ToggleButton from 'primevue/togglebutton'
 import axios from 'axios';
 import model from './../states/chartstate'
 import {defineComponent} from "vue";
@@ -133,7 +133,7 @@ export default defineComponent( {
         }
     },
     components: {
-        ToggleButton,
+        // ToggleButton,
     },
     computed: {
         productsCount(){

@@ -11,13 +11,14 @@
             <router-link to="/bolo">Produtos</router-link>
             <router-link to="/auth">Login</router-link>
           </ul>
-          <Sidebar v-model:visible="visibleLeft" position="right">
-          <h2>Produto</h2>
+          <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
+          <h2 id="tProduto">Produto</h2>
           <ul  v-for= "p in model.shopInfo.products" :key="p.id_Produto">
           <li>
             {{p.nom_produto}}
           </li>
           </ul>
+          <Button class="buy">Finalizar Compra</Button>
           </Sidebar>
           <span class="material-icons" @click="abrirSidenav">shopping_cart</span>
           <!--<button type="button">Subscribe</button>-->
@@ -67,6 +68,19 @@ export default defineComponent({
 })
 </script>
 <style>
+
+#tProduto {
+  color: #d4a373;
+}
+
+.buy {
+  background-color: #d4a373;
+  color: #CCD5AE;
+  display: absolute;
+  margin-left: 55px;
+  margin-top: 550px;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -83,6 +97,10 @@ export default defineComponent({
 }
 :root {
   --bs-dark-rgb: #fff1e6;
+}
+
+#sidebar {
+  background-color: #CCD5AE;
 }
 
 #app {
