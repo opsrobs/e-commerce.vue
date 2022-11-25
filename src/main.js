@@ -9,10 +9,11 @@ import Sidebar from 'primevue/sidebar'
 import TabMenu from 'primevue/tabmenu'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice';
+import KeenSlider from 'keen-slider'
 
 
 
-
+import 'keen-slider/keen-slider.min.css' // carousel
 import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'       //core css
 import 'primeicons/primeicons.css'       //icons
@@ -27,6 +28,7 @@ apps.use(PrimeVue)
 apps.use(ToastService)
 apps.use(Sidebar)
 apps.mount('#app')
+apps.use(KeenSlider)
 
 export default defineComponent({
     setup() {

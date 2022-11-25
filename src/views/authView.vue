@@ -149,7 +149,7 @@ export default {
                     console.log(result._tokenResponse)
 
                     this.user = result.user.displayName;
-                    this.isSignedIn = true
+                    this.isVisible = false
                 }).catch((error) => {
                     console.log(error)
                 });
@@ -162,7 +162,7 @@ export default {
                     console.log(result._tokenResponse)
 
                     this.user = result.user.displayName;
-                    this.isSignedIn = true
+                    this.isVisible = false
                 }).catch((error) => {
                     console.log(error)
                 });
@@ -185,7 +185,7 @@ export default {
 }
 
 body {
-    background-color: #080710;
+    background-color: #FEFAE0;
 }
 
 .login-submit,
