@@ -8,15 +8,15 @@
         <!-- TODO: Centralizar os componentes dos cards -->
         <div class="card-group" v-for="c in model.cards" :key="c.img">
             <div class="card">
-                <img class="card-img-top" :src="c.img" alt="Card image cap">
+                <img class="card-img-top" :src="c.urlimagem" :alt="c.imagealt">
                 <div class="card-body">
-                    <h5 class="card-title">{{ c.nom_produto }}</h5>
+                    <h5 class="card-title">{{ c.nomeProduto }}</h5>
                     <p class="card-text">
-                        {{ lengthDescription(c.descricao_produto)}}</p>
+                        {{ lengthDescription(c.descProduto)}}</p>
                     <p class="card-text">
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
-                    <a class="btn btn-outline-dark mt-auto" href="#" @click="()=>model.shopInfo.products.push(c)" >Adicionar ao carrinho</a>
+                    <a class="btn btn-outline-dark mt-auto" href="#" @click="()=>model.shopInfo.products.push(c.nomeProduto)" >Adicionar ao carrinho</a>
                     <p>
                         Contagem de Produtos {{productsCount}}
                     </p>
@@ -37,34 +37,25 @@ import axios from 'axios';
 import model from './../states/chartstate'
 import {defineComponent} from "vue";
 
-// onMounted(()=>{
-//             axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
-//             .then(resp => {
-//                 this.model.categories = resp.data
-//                 console.log(resp.data)
-
-//             }),
-
-//             axios.get("https://run.mocky.io/v3/4e8714aa-6305-4aad-81a1-8a5ca203355d")
-//                 .then(resp => {
-//                     this.model.cards = resp.data
-//                     console.log(resp.data)
-
-//                 })
-//             })
-
 export default defineComponent( {
     mounted(){
-            axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
-            .then(resp => {
-                this.model.categories = resp.data
-                console.log(resp.data)
+        // axios.get("http://localhost:8080/api/user-products")
+        //     .then(resp => {
+        //         this.model.categories = resp.data
+        //         console.log(resp.data)
 
-            }),
-
-            axios.get("https://run.mocky.io/v3/4e8714aa-6305-4aad-81a1-8a5ca203355d")
+        //     }),
+            let username = 'robson.flavio'
+            let password= 'senha123'
+            axios.get("http://localhost:8080/api/user-products",
+                {
+                    auth: {
+                        username: username,
+                        password: password
+                    },
+                })
                 .then(resp => {
-                    this.model.cards = resp.data
+                    this.model.cards = resp.data.content
                     console.log(resp.data)
 
                 })
@@ -114,10 +105,10 @@ export default defineComponent( {
             });
         };
         const lengthDescription=(text)=> {
-            if(text.length< 5){
+            if(text.length< 15){
                 return text
             }else{
-               return text.substring(0,8)+"..."               
+               return text.substring(0,15)+"..."               
             }
         }
         // const productsCount=computed(
