@@ -107,7 +107,7 @@ export default {
                 return this.isValid = true
         },
         login() {
-            axios.get('http://localhost:8080/e-commerce',
+            axios.get('http://localhost:8080/e-commerce/',
                 {
                     auth: {
                         username: this.user.username,
