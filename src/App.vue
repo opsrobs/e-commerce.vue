@@ -38,7 +38,7 @@ export default defineComponent({
   methods:{
     abrirSidenav(){
       this.visibleLeft = true;console.log("deveria funcionar")
-    }
+    },
   },
   setup() {
     const items=reactive (
@@ -74,11 +74,15 @@ export default defineComponent({
 }
 
 .buy {
-  background-color: #2c3e50;
+  background-color: #d4a373;
   color: #CCD5AE;
   display: absolute;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0px;
   margin-left: 55px;
   margin-top: 550px;
+  
 }
 
 .material-icons {
