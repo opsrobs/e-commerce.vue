@@ -45,8 +45,8 @@ export default defineComponent( {
         //         console.log(resp.data)
 
         //     }),
-            let username = 'robson.flavio'
-            let password= 'senha123'
+            let username = 'kelvinusera'
+            let password= 'pao'
             axios.get("http://localhost:8080/api/user-products",
                 {
                     auth: {
