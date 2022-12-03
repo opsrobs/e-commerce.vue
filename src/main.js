@@ -1,8 +1,9 @@
-import { createApp } from 'vue'
+import { createApp} from 'vue'
 import { defineComponent } from "vue";
 import { useToast } from "primevue/usetoast";
 
 import App from './App.vue'
+import VueMask from 'v-mask'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import Sidebar from 'primevue/sidebar'
@@ -10,7 +11,6 @@ import TabMenu from 'primevue/tabmenu'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice';
 import KeenSlider from 'keen-slider'
-
 
 
 import 'keen-slider/keen-slider.min.css' // carousel
@@ -29,6 +29,7 @@ apps.use(ToastService)
 apps.use(Sidebar)
 apps.mount('#app')
 apps.use(KeenSlider)
+apps.use(VueMask)
 
 export default defineComponent({
     setup() {
