@@ -6,19 +6,20 @@
             </row>
         </div> -->
         <!-- TODO: Centralizar os componentes dos cards -->
-        <div class="card-group" v-for="c in model.cards" :key="c.img">
+        <div class="card-group" v-for="c in productx" :key="c.id">
             <div class="card">
                 <img class="card-img-top" :src="c.urlimagem" :alt="c.imagealt">
                 <div class="card-body">
                     <h5 class="card-title">{{ c.nomeProduto }}</h5>
                     <p class="card-text">
-                        {{ lengthDescription(c.descProduto)}}</p>
+                        {{ lengthDescription(c.descProduto) }}</p>
                     <p class="card-text">
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
-                    <a class="btn btn-outline-dark mt-auto" href="#" @click="()=>model.shopInfo.products.push(c.nomeProduto)" >Adicionar ao carrinho</a>
+                    <a class="btn btn-outline-dark mt-auto" href="#" @click="checkout(c.id)">Adicionar ao carrinho</a>
+                    <!-- <a class="btn btn-outline-dark mt-auto" href="#" @click="()=>model.shopInfo.products.push(c.nomeProduto)" >Adicionar ao carrinho</a> -->
                     <p>
-                        Contagem de Produtos {{productsCount}}
+                        Contagem de Produtos {{ productsCount }}
                     </p>
                 </div>
             </div>
@@ -35,48 +36,53 @@
 // import ToggleButton from 'primevue/togglebutton'
 import axios from 'axios';
 import model from './../states/chartstate'
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
-export default defineComponent( {
-    mounted(){
+export default defineComponent({
+    data() {
+        return {
+            productx: []
+
+        }
+    },
+    mounted() {
         // axios.get("http://localhost:8080/api/user-products")
         //     .then(resp => {
         //         this.model.categories = resp.data
         //         console.log(resp.data)
 
         //     }),
-            let username = 'robson.flavio'
-            let password= 'senha123'
-            axios.get("http://localhost:8080/api/user-products",
-                {
-                    auth: {
-                        username: username,
-                        password: password
-                    },
-                })
-                .then(resp => {
-                    this.model.cards = resp.data.content
-                    console.log(resp.data)
+        let username = 'robson.flavio'
+        let password = 'senha123'
+        axios.get("http://localhost:8080/api/user-products",
+            {
+                auth: {
+                    username: username,
+                    password: password
+                },
+            })
+            .then(resp => {
+                this.productx = resp.data.content
 
-                })
-            },
-    setup(){
-      const check=()=> {
+            })
+    },
+    setup() {
+        const check = () => {
             this.model.currentItem
             //alert(this.checked)
         };
-      const isleft=()=> {
+        const isleft = () => {
             this.model.left = true;
             this.model.currentItem -= 1
             this.model.carousel()
 
         };
-      const isRight=()=> {
+        const isRight = () => {
             this.model.left = false;
             this.model.currentItem += 1
             this.carousel()
         };
-      const carousel=()=> {
+        const carousel = () => {
             const controls = document.querySelectorAll(".control");
             const items = document.querySelectorAll(".item");
             const maxItems = items.length;
@@ -98,17 +104,17 @@ export default defineComponent( {
                         behavior: 'auto',
                         block: 'center',
                         inline: "center"
-                });
+                    });
 
                     items[this.model.currentItem].classList.add("current-item");
                 });
             });
         };
-        const lengthDescription=(text)=> {
-            if(text.length< 15){
+        const lengthDescription = (text) => {
+            if (text.length < 15) {
                 return text
-            }else{
-               return text.substring(0,15)+"..."               
+            } else {
+                return text.substring(0, 15) + "..."
             }
         }
         // const productsCount=computed(
@@ -120,16 +126,31 @@ export default defineComponent( {
             isRight,
             carousel,
             lengthDescription,
-            model
+            model,
+            products: {
+                id: null,
+                descProduto: '',
+                imagealt: null,
+                nomeProduto: '',
+                preco_produto: null,
+                urlimagem: ''
+            }
         }
     },
     components: {
         // ToggleButton,
     },
+    methods: {
+        checkout(id) {
+            console.log(id)
+            this.$router.push(`/payment/${id}`)
+        }
+    },
     computed: {
-        productsCount(){
-          return this.model.shopInfo.products.length
-    }}
+        productsCount() {
+            return this.model.shopInfo.products.length
+        }
+    }
 })
 
 
@@ -185,7 +206,8 @@ h1 {
 
 
 .card-group {
-    height: auto; /* alterar para 500px caso os cards fiquem de tamanhos diferentes */  
+    height: auto;
+    /* alterar para 500px caso os cards fiquem de tamanhos diferentes */
     width: 300px;
     padding: 15px;
 

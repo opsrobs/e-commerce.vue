@@ -30,6 +30,11 @@ const routes = [
     name: 'Pagar',
     component: () => import('../views/PaypalView.vue')
   },
+  {
+    path: '/payment/:id',
+    name: 'Pagar',
+    component: () => import('../views/PaypalView.vue')
+  },
 ]
 
 const router = createRouter({
