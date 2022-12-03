@@ -52,6 +52,7 @@ export default defineComponent({
         //         console.log(resp.data)
 
         //     }),
+<<<<<<< HEAD
         let username = 'robson.flavio'
         let password = 'senha123'
         axios.get("http://localhost:8080/api/user-products",
@@ -63,6 +64,20 @@ export default defineComponent({
             })
             .then(resp => {
                 this.productx = resp.data.content
+=======
+            let username = 'kelvinusera'
+            let password= 'pao'
+            axios.get("http://localhost:8080/api/user-products",
+                {
+                    auth: {
+                        username: username,
+                        password: password
+                    },
+                })
+                .then(resp => {
+                    this.model.cards = resp.data.content
+                    console.log(resp.data)
+>>>>>>> 2a53b4152ee9be659a0a0ef6ccfe50f8d2e45a74
 
             })
     },
