@@ -1,25 +1,36 @@
 <template >
     <div>
+        <SidebarView :product="carProduct"/>
+
         <!-- <div>
             <row v-for="p in model.categories" :key="p.id_tipo_produto">
                 <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
             </row>
         </div> -->
         <!-- TODO: Centralizar os componentes dos cards -->
+
+
+
         <div class="card-group" v-for="c in productx" :key="c.id">
             <div class="card">
+
                 <img class="card-img-top" :src="c.urlimagem" :alt="c.imagealt">
                 <div class="card-body">
                     <h5 class="card-title">{{ c.nomeProduto }}</h5>
                     <p class="card-text">
                         {{ lengthDescription(c.descProduto) }}</p>
                     <p class="card-text">
-                        <small class="text-muted">Last updated 3 mins ago</small>
+                        <small class="text-muted">{{c.preco_produto+' R$'}}</small>
                     </p>
-                    <a class="btn btn-outline-dark mt-auto" href="#" @click="checkout(c.id)">Adicionar ao carrinho</a>
+                    <a class="btn btn-outline-dark mt-auto" href="#" @click="checkout(c)">Adicionar ao carrinho
+        <!-- <SidebarView :product="c.nomeProduto"/> -->
+                    
+                    </a>
                     <!-- <a class="btn btn-outline-dark mt-auto" href="#" @click="()=>model.shopInfo.products.push(c.nomeProduto)" >Adicionar ao carrinho</a> -->
+
+
                     <p>
-                        Contagem de Produtos {{ productsCount }}
+                        <!-- Contagem de Produtos {{ productsCount }} -->
                     </p>
                 </div>
             </div>
@@ -35,12 +46,14 @@
 // import Carousel from 'primevue/carousel'
 // import ToggleButton from 'primevue/togglebutton'
 import axios from 'axios';
-import model from './../states/chartstate'
 import { defineComponent } from "vue";
+import SidebarView from './sidebarView.vue';
 
 export default defineComponent({
+    emits: ['SentToSidebar'],
     data() {
         return {
+            carProduct:'',
             productx: []
 
         }
@@ -52,7 +65,6 @@ export default defineComponent({
         //         console.log(resp.data)
 
         //     }),
-<<<<<<< HEAD
         let username = 'robson.flavio'
         let password = 'senha123'
         axios.get("http://localhost:8080/api/user-products",
@@ -64,20 +76,8 @@ export default defineComponent({
             })
             .then(resp => {
                 this.productx = resp.data.content
-=======
-            let username = 'kelvinusera'
-            let password= 'pao'
-            axios.get("http://localhost:8080/api/user-products",
-                {
-                    auth: {
-                        username: username,
-                        password: password
-                    },
-                })
-                .then(resp => {
-                    this.model.cards = resp.data.content
-                    console.log(resp.data)
->>>>>>> 2a53b4152ee9be659a0a0ef6ccfe50f8d2e45a74
+
+                console.log(resp.data)
 
             })
     },
@@ -141,7 +141,6 @@ export default defineComponent({
             isRight,
             carousel,
             lengthDescription,
-            model,
             products: {
                 id: null,
                 descProduto: '',
@@ -153,12 +152,17 @@ export default defineComponent({
         }
     },
     components: {
-        // ToggleButton,
-    },
+    SidebarView
+},
     methods: {
-        checkout(id) {
-            console.log(id)
-            this.$router.push(`/payment/${id}`)
+        checkout(c) {
+            this.carProduct = c
+            console.log(this.carProduct)
+
+        },
+        sendToCard(product) {
+            console.log(product.nomeProduto)
+            this.carProduct = product
         }
     },
     computed: {

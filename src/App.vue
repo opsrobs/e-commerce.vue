@@ -11,17 +11,8 @@
             <router-link to="/bolo">Produtos</router-link>
             <router-link to="/auth">Login</router-link>
           </ul>
-          <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
-          <h2 id="tProduto">Produto</h2>
-          <ul  v-for= "p in model.shopInfo.products" :key="p.id_Produto">
-          <li>
-            {{p.nom_produto}}
-          </li>
-          </ul>
-          <Button class="buy">Finalizar Compra</Button>
-          </Sidebar>
-          <span class="material-icons" @click="abrirSidenav">shopping_cart</span>
-          <!--<button type="button">Subscribe</button>-->
+          <SidebarView/>
+          
         </nav>
       </div>
     </body>
@@ -29,46 +20,47 @@
   </div>
 </template>
 <script>
-import Sidebar from 'primevue/sidebar';
 import 'primeicons/primeicons.css';
-import { defineComponent, reactive, ref} from 'vue';
-import model from './states/chartstate';
+import { defineComponent, reactive, ref } from 'vue';
+import SidebarView from './views/sidebarView.vue';
 
 export default defineComponent({
-  methods:{
-    abrirSidenav(){
-      this.visibleLeft = true;console.log("deveria funcionar")
+  props: {
+    product: String
+  },
+  methods: {
+    abrirSidenav() {
+      this.visibleLeft = true; console.log("deveria funcionar")
     },
   },
   setup() {
-    const items=reactive (
+    const items = reactive(
       [
         { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
         { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
       ]
-      )
-      const visibleLeft=ref (
-        false
-      )
+    )
+    const visibleLeft = ref(
+      false
+    )
     return {
-      model,
       items,
       visibleLeft
     }
   },
   components: {
-    Sidebar
-  },
+    SidebarView
+},
   computed: {
-        productsCount(){
-          return this.model.shopInfo.products.length
-    }}
+    productsCount() {
+      return this.model.shopInfo.products.length
+    }
+  }
 })
 </script>
 <style>
-
 #tProduto {
   color: #d4a373;
 }
@@ -82,14 +74,15 @@ export default defineComponent({
   bottom: 0px;
   margin-left: 55px;
   margin-top: 550px;
-  
+
 }
 
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 28px;  /* Preferred icon size */
+  font-size: 28px;
+  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -99,6 +92,7 @@ export default defineComponent({
   direction: ltr;
   color: #d4a373;
 }
+
 :root {
   --bs-dark-rgb: #fff1e6;
 }
@@ -127,7 +121,7 @@ nav a {
   font-weight: bold;
   color: #d4a373;
   padding: 10px 20px;
-  text-decoration:none;
+  text-decoration: none;
 }
 
 #login {
@@ -140,7 +134,7 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #7f5539;
-  
+
 }
 
 .bg-dark {
@@ -206,6 +200,4 @@ button:hover {
   transform: scale(1.3);
   cursor: pointer;
 }
-
-
 </style>

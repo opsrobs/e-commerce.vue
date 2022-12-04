@@ -3,7 +3,6 @@ import { defineComponent } from "vue";
 import { useToast } from "primevue/usetoast";
 
 import App from './App.vue'
-import VueMask from 'v-mask'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import Sidebar from 'primevue/sidebar'
@@ -19,17 +18,17 @@ import 'primevue/resources/primevue.min.css'       //core css
 import 'primeicons/primeicons.css'       //icons
 
 
-const apps = createApp(App)
+const app = createApp(App)
 
-apps.use(router)
-apps.use(TabMenu)
-apps.use(ConfirmationService)
-apps.use(PrimeVue)
-apps.use(ToastService)
-apps.use(Sidebar)
-apps.mount('#app')
-apps.use(KeenSlider)
-apps.use(VueMask)
+app.use(router)
+app.use(TabMenu)
+app.use(ConfirmationService)
+app.use(PrimeVue)
+app.use(ToastService)
+app.use(Sidebar)
+app.use(KeenSlider)
+app.mount('#app')
+
 
 export default defineComponent({
     setup() {
