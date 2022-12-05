@@ -12,12 +12,13 @@
             <router-link to="/auth">Login</router-link>
           </ul>
           <Sidebar v-model:visible="visibleLeft" position="right">
-          <h2>Produto</h2>
-          <ul  v-for= "p in model.shopInfo.products" :key="p.id_Produto">
-          <li>
-            {{(p.nomeProduto + ' ' + 'R$'+p.preco_produto )}}
-          </li>
-          </ul>
+            <h2>Produto</h2>
+            <ul v-for="p in model.shopInfo.products" :key="p.id_Produto">
+              <li>
+                {{ (p.nomeProduto + ' ' + 'R$' + p.preco_produto) }}
+              </li>
+            </ul>
+            <Button class="buy" @click="buy(p)">Finalizar Compra</Button>
           </Sidebar>
           <span class="material-icons" @click="abrirSidenav">shopping_cart</span>
           <!--<button type="button">Subscribe</button>-->
@@ -30,27 +31,30 @@
 <script>
 import Sidebar from 'primevue/sidebar';
 import 'primeicons/primeicons.css';
-import { defineComponent, reactive, ref} from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import model from './states/chartstate';
 
 export default defineComponent({
-  methods:{
-    abrirSidenav(){
-      this.visibleLeft = true;console.log("deveria funcionar")
+  methods: {
+    abrirSidenav() {
+      this.visibleLeft = true; console.log("deveria funcionar")
+    },
+    buy(product) {
+      this.$router.push(`/payment/${product.id}`)
     }
   },
   setup() {
-    const items=reactive (
+    const items = reactive(
       [
         { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
         { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
       ]
-      )
-      const visibleLeft=ref (
-        false
-      )
+    )
+    const visibleLeft = ref(
+      false
+    )
     return {
       model,
       items,
@@ -61,9 +65,10 @@ export default defineComponent({
     Sidebar
   },
   computed: {
-        productsCount(){
-          return this.model.shopInfo.products.length
-    }}
+    productsCount() {
+      return this.model.shopInfo.products.length
+    }
+  }
 })
 </script>
 <style>
