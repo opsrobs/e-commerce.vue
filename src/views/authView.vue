@@ -33,6 +33,9 @@
                 <span class="review-password" v-if="!isValid">As senhas não conferem</span>
 
                 <input v-show="isVisible" class="login-submit" type="submit" value="Login">
+                <span class="create-account" >Not a User?</span>
+                <br/><a class="link-create-account" @click="createAccount()" href="#">Create Account!</a>
+
                 <input @click="new_user()" v-if="!isVisible" class="create-account" type="submit" value="Create">
                 <div class="social">
                     <div v-show="isVisible" @click="handleLogingGoogle" class="go"><i class="fab fa-google"></i> Google
@@ -124,6 +127,9 @@ export default {
                     this.$router.push('/bolo')
                     console.log(resp.data)
                 })
+        },
+        createAccount(){
+            this.isVisible =false
         },
         new_user() {
             if (this.isValid) {
@@ -337,6 +343,14 @@ input {
 
     animation: view .3s;
 
+}
+
+.create-account{
+    font-size: 10px;
+}
+
+.link-create-account{
+    font-size: 12px;
 }
 
 @keyframes view {

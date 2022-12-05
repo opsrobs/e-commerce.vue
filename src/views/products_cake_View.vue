@@ -18,9 +18,7 @@
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
                     <a class="btn btn-outline-dark mt-auto" href="#" @click="pushToSide(c)">Adicionar ao carrinho</a>
-                    <p>
-                        Contagem de Produtos {{ productsCount }}
-                    </p>
+                    
                 </div>
             </div>
 
@@ -62,16 +60,7 @@ export default defineComponent({
         //         console.log(resp.data)
 
         //     })
-        let username = 'robson.flavio'
-        let password = 'senha123'
-
-        axios.get("http://localhost:8080/api/user-products",
-            {
-                auth: {
-                    username: username,
-                    password: password
-                },
-            })
+        axios.get("http://localhost:8080/api/user-products")
             .then(resp => {
                 this.model.cards = resp.data.content
                 console.log(resp.data)
