@@ -1,10 +1,10 @@
 <template >
     <div>
-        <!-- <div>
+        <div>
             <row v-for="p in model.categories" :key="p.id_tipo_produto">
                 <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
             </row>
-        </div> -->
+        </div> 
         <!-- TODO: Centralizar os componentes dos cards -->
         <div class="card-group" v-for="c in model.cards" :key="c.img">
             <div class="card">
@@ -39,13 +39,13 @@ import {defineComponent} from "vue";
 
 export default defineComponent( {
     mounted(){
-        // axios.get("http://localhost:8080/api/user-products")
-        //     .then(resp => {
-        //         this.model.categories = resp.data
-        //         console.log(resp.data)
+         axios.get("http://localhost:8080/api/user-products")
+             .then(resp => {
+                 this.model.categories = resp.data.content
+                 console.log(resp.data)
+            })
 
-        //     }),
-            let username = 'robson.flavio'
+            let username = 'robson'
             let password= 'senha123'
             axios.get("http://localhost:8080/api/user-products",
                 {

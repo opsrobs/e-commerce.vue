@@ -13,9 +13,9 @@
                 <input class="signup" v-if="!isVisible" type="text" v-model="user.first_name" required
                     placeholder="Nome" id="nome">
 
-                <label v-if="!isVisible">Sobremome</label>
-                <input v-if="!isVisible" type="text" v-model="user.last_name" required placeholder="Sobrenome"
-                    id="sobrenome">
+                <label v-if="!isVisible">CPF/CNPJ</label>
+                <input v-if="!isVisible" type="text" v-model="user.last_name" required placeholder="CPF/CNPJ"
+                    id="CPF/CNPJ">
 
 
                 <label for="username">Username</label>
