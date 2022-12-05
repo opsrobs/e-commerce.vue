@@ -10,16 +10,20 @@
                 <h3 v-if="isVisible">{{ checkTittle() }}</h3>
 
                 <label class="signup" v-if="!isVisible">Nome</label>
-                <input class="signup" v-if="!isVisible" type="text" v-model="user.first_name" required
+                <input class="signup" v-if="!isVisible" type="text" v-model="user.nome" required
                     placeholder="Nome" id="nome">
 
-                <label v-if="!isVisible">CPF/CNPJ</label>
-                <input v-if="!isVisible" type="text" v-model="user.last_name" required placeholder="CPF/CNPJ"
-                    id="CPF/CNPJ">
+                <label v-if="!isVisible">CPF</label>
+                <input v-if="!isVisible" type="text" name="ao_cpf" maxlength="11" v-model="user.cpf_cnpj" required placeholder="000.000.000-00"
+                    id="cpf">
+
+                <label v-if="!isVisible">Data de nascimento</label>
+                <input v-if="!isVisible" type="text" v-model="user.data_nasc" required placeholder="dd/mm/aaaa"
+                    id="data_nasc">
 
 
                 <label for="username">Username</label>
-                <input type="text" v-model="user.username" required placeholder="Email or User" id="username">
+                <input type="text" v-model="user.userName" required placeholder="Email or User" id="username">
 
                 <label for="password">Password</label>
                 <input type="password" v-model="user.password" required placeholder="Password" id="password">
@@ -63,9 +67,10 @@ export default {
             new_pass: '',
             isValid: true,
             user: {
-                first_name: '',
-                last_name: '',
-                username: '',
+                nome: '',
+                cpf_cnpj: '',
+                data_nasc: '',
+                userName: '',
                 password: '',
                 roles: [
                 {
@@ -79,15 +84,16 @@ export default {
 
         }
     }, methods: {
+
         handleLogingGoogle() {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     //const user = result.user;
                     console.log(result._tokenResponse)
 
-                    this.user.first_name = result._tokenResponse.firstName
-                    this.user.last_name = result._tokenResponse.lastName
-                    this.user.username = result._tokenResponse.email
+                    this.user.nome = result._tokenResponse.displayName
+                   // this.user.last_name = result._tokenResponse.lastName
+                    this.user.userName = result._tokenResponse.email
                     // verificar se há ou não username. 
                     // Caso não haja, criar método para validar quak campo deve ser apresentado
 
@@ -200,7 +206,7 @@ input[type="submit"] {
     font-family: sans-serif;
     border-radius: 25px;
     width: 45%
-}
+}*/
 
 .background {
     width: 430px;
@@ -289,7 +295,7 @@ input {
     height: 35px;
 } */
 ::placeholder {
-    color: #e5e5e5;
+    color: #e5e5e55b;
 }
 
 .social {

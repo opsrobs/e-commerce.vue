@@ -13,4 +13,5 @@ export default reactive ({
             shopInfo: {
                 products: []
             }
+
 })

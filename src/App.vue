@@ -6,19 +6,19 @@
         <nav>
           <h2 class="logo"><span> Doceria da Alegria </span></h2>
           <ul>
-            <router-link to="/">Inicio</router-link>
+            <router-link to="/">Home</router-link>
             <router-link to="/about">About</router-link>
-            <router-link to="/bolo">Produtos</router-link>
+            <router-link to="/bolo">Bolo</router-link>
             <router-link to="/auth">Login</router-link>
           </ul>
-          <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
-          <h2 id="tProduto">Produto</h2>
-          <ul  v-for= "p in model.shopInfo.products" :key="p.id_Produto">
-          <li>
-            {{p.nom_produto}}
-          </li>
-          </ul>
-          <Button class="buy">Finalizar Compra</Button>
+          <Sidebar v-model:visible="visibleLeft" position="right">
+            <h2>Produto</h2>
+            <ul v-for="p in model.shopInfo.products" :key="p.id_Produto">
+              <li>
+                {{ (p.nomeProduto + ' ' + 'R$' + p.preco_produto) }}
+              </li>
+            </ul>
+            <Button class="buy" @click="buy(p)">Finalizar Compra</Button>
           </Sidebar>
           <span class="material-icons" @click="abrirSidenav">shopping_cart</span>
           <!--<button type="button">Subscribe</button>-->
@@ -31,27 +31,30 @@
 <script>
 import Sidebar from 'primevue/sidebar';
 import 'primeicons/primeicons.css';
-import { defineComponent, reactive, ref} from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import model from './states/chartstate';
 
 export default defineComponent({
-  methods:{
-    abrirSidenav(){
-      this.visibleLeft = true;console.log("deveria funcionar")
+  methods: {
+    abrirSidenav() {
+      this.visibleLeft = true; console.log("deveria funcionar")
+    },
+    buy(product) {
+      this.$router.push(`/payment/${product.id}`)
     }
   },
   setup() {
-    const items=reactive (
+    const items = reactive(
       [
         { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
         { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
       ]
-      )
-      const visibleLeft=ref (
-        false
-      )
+    )
+    const visibleLeft = ref(
+      false
+    )
     return {
       model,
       items,
@@ -62,30 +65,35 @@ export default defineComponent({
     Sidebar
   },
   computed: {
-        productsCount(){
-          return this.model.shopInfo.products.length
-    }}
+    productsCount() {
+      return this.model.shopInfo.products.length
+    }
+  }
 })
 </script>
 <style>
-
 #tProduto {
   color: #d4a373;
 }
 
 .buy {
-  background-color: #2c3e50;
+  background-color: #d4a373;
   color: #CCD5AE;
   display: absolute;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0px;
   margin-left: 55px;
   margin-top: 550px;
+
 }
 
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 28px;  /* Preferred icon size */
+  font-size: 28px;
+  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -95,6 +103,7 @@ export default defineComponent({
   direction: ltr;
   color: #d4a373;
 }
+
 :root {
   --bs-dark-rgb: #fff1e6;
 }
@@ -123,7 +132,7 @@ nav a {
   font-weight: bold;
   color: #d4a373;
   padding: 10px 20px;
-  text-decoration:none;
+  text-decoration: none;
 }
 
 #login {
@@ -136,7 +145,7 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #7f5539;
-  
+
 }
 
 .bg-dark {
@@ -202,6 +211,4 @@ button:hover {
   transform: scale(1.3);
   cursor: pointer;
 }
-
-
 </style>

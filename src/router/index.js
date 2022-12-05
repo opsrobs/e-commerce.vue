@@ -25,6 +25,16 @@ const routes = [
     name: 'bolos',
     component: () => import('../views/products_cake_View.vue')
   },
+  {
+    path: '/payment',
+    name: 'Pagar',
+    component: () => import('../views/PaypalView.vue')
+  },
+  {
+    path: '/payment/:id',
+    name: 'Pagar',
+    component: () => import('../views/PaypalView.vue')
+  },
 ]
 
 const router = createRouter({

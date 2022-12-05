@@ -1,24 +1,25 @@
 <template >
     <div>
+<!-- <h1>{{model.cards}}</h1> -->
         <div>
+
             <row v-for="p in model.categories" :key="p.id_tipo_produto">
                 <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
             </row>
-        </div> 
+        </div>
         <!-- TODO: Centralizar os componentes dos cards -->
-        <div class="card-group" v-for="c in model.cards" :key="c.img">
+        <div class="card-group" v-for="c in model.cards" :key="c.id">
             <div class="card">
-                <img class="card-img-top" :src="c.urlimagem" :alt="c.imagealt">
+                <img class="card-img-top" :src="c.urlimagem" alt="Card image cap" width="230" height="215">
                 <div class="card-body">
                     <h5 class="card-title">{{ c.nomeProduto }}</h5>
-                    <p class="card-text">
-                        {{ lengthDescription(c.descProduto)}}</p>
+                    <p class="card-text">{{ lengthDescription(c.descProduto) }}</p>
                     <p class="card-text">
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
-                    <a class="btn btn-outline-dark mt-auto" href="#" @click="()=>model.shopInfo.products.push(c.nomeProduto)" >Adicionar ao carrinho</a>
+                    <a class="btn btn-outline-dark mt-auto" href="#" @click="pushToSide(c)">Adicionar ao carrinho</a>
                     <p>
-                        Contagem de Produtos {{productsCount}}
+                        Contagem de Produtos {{ productsCount }}
                     </p>
                 </div>
             </div>
@@ -35,48 +36,56 @@
 // import ToggleButton from 'primevue/togglebutton'
 import axios from 'axios';
 import model from './../states/chartstate'
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
-export default defineComponent( {
-    mounted(){
-         axios.get("http://localhost:8080/api/user-products")
-             .then(resp => {
-                 this.model.categories = resp.data.content
-                 console.log(resp.data)
-            })
+// onMounted(()=>{
+//             axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
+//             .then(resp => {
+//                 this.model.categories = resp.data
+//                 console.log(resp.data)
 
-            let username = 'robson'
-            let password= 'senha123'
-            axios.get("http://localhost:8080/api/user-products",
-                {
-                    auth: {
-                        username: username,
-                        password: password
-                    },
-                })
-                .then(resp => {
-                    this.model.cards = resp.data.content
-                    console.log(resp.data)
+//             }),
 
-                })
-            },
-    setup(){
-      const check=()=> {
+//             axios.get("https://run.mocky.io/v3/4e8714aa-6305-4aad-81a1-8a5ca203355d")
+//                 .then(resp => {
+//                     this.model.cards = resp.data
+//                     console.log(resp.data)
+
+//                 })
+//             })
+
+export default defineComponent({
+    mounted() {
+        // axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
+        //     .then(resp => {
+        //         this.model.categories = resp.data
+        //         console.log(resp.data)
+
+        //     })
+        axios.get("http://localhost:8080/api/user-products")
+            .then(resp => {
+                this.model.cards = resp.data.content
+                console.log(resp.data)
+
+            }).catch(err => console.log(err))
+    },
+    setup() {
+        const check = () => {
             this.model.currentItem
             //alert(this.checked)
         };
-      const isleft=()=> {
+        const isleft = () => {
             this.model.left = true;
             this.model.currentItem -= 1
             this.model.carousel()
 
         };
-      const isRight=()=> {
+        const isRight = () => {
             this.model.left = false;
             this.model.currentItem += 1
             this.carousel()
         };
-      const carousel=()=> {
+        const carousel = () => {
             const controls = document.querySelectorAll(".control");
             const items = document.querySelectorAll(".item");
             const maxItems = items.length;
@@ -98,17 +107,17 @@ export default defineComponent( {
                         behavior: 'auto',
                         block: 'center',
                         inline: "center"
-                });
+                    });
 
                     items[this.model.currentItem].classList.add("current-item");
                 });
             });
         };
-        const lengthDescription=(text)=> {
-            if(text.length< 15){
+        const lengthDescription = (text) => {
+            if (text.length < 5) {
                 return text
-            }else{
-               return text.substring(0,15)+"..."               
+            } else {
+                return text.substring(0, 8) + "..."
             }
         }
         // const productsCount=computed(
@@ -126,10 +135,28 @@ export default defineComponent( {
     components: {
         // ToggleButton,
     },
+    methods: {
+        pushToSide(p) {
+            this.salvarProduto(p)
+            model.shopInfo.products.push(p)
+        },
+        salvarProduto(p) {
+
+            // Pega a lista já cadastrada, se não houver vira um array vazio
+            var lista_produtos = JSON.parse(localStorage.getItem('lista-produtos') || '[]');
+            // Adiciona pessoa ao cadastro
+            lista_produtos.push(p);
+
+            // Salva a lista alterada    
+            localStorage.setItem("lista-produtos", JSON.stringify(lista_produtos));
+            console.log('Salva com sucesso.');
+        },
+    },
     computed: {
-        productsCount(){
-          return this.model.shopInfo.products.length
-    }}
+        productsCount() {
+            return this.model.shopInfo.products.length
+        }
+    }
 })
 
 
@@ -185,7 +212,8 @@ h1 {
 
 
 .card-group {
-    height: auto; /* alterar para 500px caso os cards fiquem de tamanhos diferentes */  
+    height: auto;
+    /* alterar para 500px caso os cards fiquem de tamanhos diferentes */
     width: 300px;
     padding: 15px;
 
