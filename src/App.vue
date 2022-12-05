@@ -6,13 +6,21 @@
         <nav>
           <h2 class="logo"><span> Doceria da Alegria </span></h2>
           <ul>
-            <router-link to="/">Inicio</router-link>
+            <router-link to="/">Home</router-link>
             <router-link to="/about">About</router-link>
-            <router-link to="/bolo">Produtos</router-link>
+            <router-link to="/bolo">Bolo</router-link>
             <router-link to="/auth">Login</router-link>
           </ul>
-          <SidebarView/>
-          
+          <Sidebar v-model:visible="visibleLeft" position="right">
+          <h2>Produto</h2>
+          <ul  v-for= "p in model.shopInfo.products" :key="p.id_Produto">
+          <li>
+            {{(p.nomeProduto + ' ' + 'R$'+p.preco_produto )}}
+          </li>
+          </ul>
+          </Sidebar>
+          <span class="material-icons" @click="abrirSidenav">shopping_cart</span>
+          <!--<button type="button">Subscribe</button>-->
         </nav>
       </div>
     </body>
@@ -20,44 +28,42 @@
   </div>
 </template>
 <script>
+import Sidebar from 'primevue/sidebar';
 import 'primeicons/primeicons.css';
-import { defineComponent, reactive, ref } from 'vue';
-import SidebarView from './views/sidebarView.vue';
+import { defineComponent, reactive, ref} from 'vue';
+import model from './states/chartstate';
 
 export default defineComponent({
-  props: {
-    product: String
-  },
-  methods: {
-    abrirSidenav() {
-      this.visibleLeft = true; console.log("deveria funcionar")
-    },
+  methods:{
+    abrirSidenav(){
+      this.visibleLeft = true;console.log("deveria funcionar")
+    }
   },
   setup() {
-    const items = reactive(
+    const items=reactive (
       [
         { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
         { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
       ]
-    )
-    const visibleLeft = ref(
-      false
-    )
+      )
+      const visibleLeft=ref (
+        false
+      )
     return {
+      model,
       items,
       visibleLeft
     }
   },
   components: {
-    SidebarView
-},
+    Sidebar
+  },
   computed: {
-    productsCount() {
-      return this.model.shopInfo.products.length
-    }
-  }
+        productsCount(){
+          return this.model.shopInfo.products.length
+    }}
 })
 </script>
 <style>

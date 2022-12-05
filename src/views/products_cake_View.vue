@@ -1,36 +1,25 @@
 <template >
     <div>
-        <SidebarView :product="carProduct"/>
 
-        <!-- <div>
+        <div>
+
             <row v-for="p in model.categories" :key="p.id_tipo_produto">
                 <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
             </row>
-        </div> -->
+        </div>
         <!-- TODO: Centralizar os componentes dos cards -->
-
-
-
-        <div class="card-group" v-for="c in productx" :key="c.id">
+        <div class="card-group" v-for="c in model.cards" :key="c.id">
             <div class="card">
-
-                <img class="card-img-top" :src="c.urlimagem" :alt="c.imagealt">
+                <img class="card-img-top" :src="c.urlimagem" alt="Card image cap" width="230" height="215">
                 <div class="card-body">
                     <h5 class="card-title">{{ c.nomeProduto }}</h5>
+                    <p class="card-text">{{ lengthDescription(c.descProduto) }}</p>
                     <p class="card-text">
-                        {{ lengthDescription(c.descProduto) }}</p>
-                    <p class="card-text">
-                        <small class="text-muted">{{c.preco_produto+' R$'}}</small>
+                        <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
-                    <a class="btn btn-outline-dark mt-auto" href="#" @click="checkout(c)">Adicionar ao carrinho
-        <!-- <SidebarView :product="c.nomeProduto"/> -->
-                    
-                    </a>
-                    <!-- <a class="btn btn-outline-dark mt-auto" href="#" @click="()=>model.shopInfo.products.push(c.nomeProduto)" >Adicionar ao carrinho</a> -->
-
-
+                    <a class="btn btn-outline-dark mt-auto" href="#" @click="pushToSide(c)">Adicionar ao carrinho</a>
                     <p>
-                        <!-- Contagem de Produtos {{ productsCount }} -->
+                        Contagem de Produtos {{ productsCount }}
                     </p>
                 </div>
             </div>
@@ -46,27 +35,36 @@
 // import Carousel from 'primevue/carousel'
 // import ToggleButton from 'primevue/togglebutton'
 import axios from 'axios';
+import model from './../states/chartstate'
 import { defineComponent } from "vue";
-import SidebarView from './sidebarView.vue';
+
+// onMounted(()=>{
+//             axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
+//             .then(resp => {
+//                 this.model.categories = resp.data
+//                 console.log(resp.data)
+
+//             }),
+
+//             axios.get("https://run.mocky.io/v3/4e8714aa-6305-4aad-81a1-8a5ca203355d")
+//                 .then(resp => {
+//                     this.model.cards = resp.data
+//                     console.log(resp.data)
+
+//                 })
+//             })
 
 export default defineComponent({
-    emits: ['SentToSidebar'],
-    data() {
-        return {
-            carProduct:'',
-            productx: []
-
-        }
-    },
     mounted() {
-        // axios.get("http://localhost:8080/api/user-products")
+        // axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
         //     .then(resp => {
         //         this.model.categories = resp.data
         //         console.log(resp.data)
 
-        //     }),
+        //     })
         let username = 'robson.flavio'
         let password = 'senha123'
+
         axios.get("http://localhost:8080/api/user-products",
             {
                 auth: {
@@ -75,8 +73,7 @@ export default defineComponent({
                 },
             })
             .then(resp => {
-                this.productx = resp.data.content
-
+                this.model.cards = resp.data.content
                 console.log(resp.data)
 
             })
@@ -126,10 +123,10 @@ export default defineComponent({
             });
         };
         const lengthDescription = (text) => {
-            if (text.length < 15) {
+            if (text.length < 5) {
                 return text
             } else {
-                return text.substring(0, 15) + "..."
+                return text.substring(0, 8) + "..."
             }
         }
         // const productsCount=computed(
@@ -141,29 +138,28 @@ export default defineComponent({
             isRight,
             carousel,
             lengthDescription,
-            products: {
-                id: null,
-                descProduto: '',
-                imagealt: null,
-                nomeProduto: '',
-                preco_produto: null,
-                urlimagem: ''
-            }
+            model
         }
     },
     components: {
-    SidebarView
-},
+        // ToggleButton,
+    },
     methods: {
-        checkout(c) {
-            this.carProduct = c
-            console.log(this.carProduct)
-
+        pushToSide(p) {
+            this.salvarProduto(p)
+            model.shopInfo.products.push(p)
         },
-        sendToCard(product) {
-            console.log(product.nomeProduto)
-            this.carProduct = product
-        }
+        salvarProduto(p) {
+
+            // Pega a lista já cadastrada, se não houver vira um array vazio
+            var lista_produtos = JSON.parse(localStorage.getItem('lista-produtos') || '[]');
+            // Adiciona pessoa ao cadastro
+            lista_produtos.push(p);
+
+            // Salva a lista alterada    
+            localStorage.setItem("lista-produtos", JSON.stringify(lista_produtos));
+            console.log('Salva com sucesso.');
+        },
     },
     computed: {
         productsCount() {
