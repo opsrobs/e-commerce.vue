@@ -11,15 +11,8 @@
           <ul>
             <router-link to="/">Início</router-link>
             <router-link to="/about">About</router-link>
-<<<<<<< HEAD
-            <router-link to="/bolo">Bolo</router-link>
-            <router-link to="/auth">Login</router-link>
-            <img src="https://imgur.com/H1X2vpA"/>
-
-=======
             <router-link to="/bolo">Produtos</router-link>
             <!-- <router-link to="/auth">Login</router-link> -->
->>>>>>> 688f00b3a7833450e6ffb8646f587876b3943e41
           </ul>
           <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
             <h2 id="tProduto">Produtos</h2>

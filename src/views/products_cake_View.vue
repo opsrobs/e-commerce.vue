@@ -2,10 +2,10 @@
     <div>
 
         <div>
+            <h3>{{model.categories.nomeTipo}}</h3>
+            <span v-for="p in model.categories" :key="p.id"> 
+                <toggle-button v-model="p.nomeTipo" :onLabel="p.nomeTipo" :offLabel="p.nomeTipo" /> </span>
 
-            <row v-for="p in model.categories" :key="p.id_tipo_produto">
-                <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
-            </row>
         </div>
         <!-- TODO: Centralizar os componentes dos cards -->
         <div class="card-group" v-for="c in model.cards" :key="c.id">
@@ -31,7 +31,7 @@
 
 <script>
 // import Carousel from 'primevue/carousel'
-// import ToggleButton from 'primevue/togglebutton'
+import ToggleButton from 'primevue/togglebutton'
 import axios from 'axios';
 import model from './../states/chartstate'
 import { defineComponent } from "vue";
@@ -54,12 +54,12 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     mounted() {
-        // axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
-        //     .then(resp => {
-        //         this.model.categories = resp.data
-        //         console.log(resp.data)
+        axios.get("http://localhost:8080/api/user-categories")
+            .then(resp => {
+                this.model.categories = resp.data.content
+                console.log(resp.data.content)
 
-        //     })
+            })
         axios.get("http://localhost:8080/api/user-products")
             .then(resp => {
                 this.model.cards = resp.data.content
@@ -131,7 +131,7 @@ export default defineComponent({
         }
     },
     components: {
-        // ToggleButton,
+        ToggleButton,
     },
     methods: {
         pushToSide(p) {
