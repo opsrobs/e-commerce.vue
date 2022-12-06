@@ -33,6 +33,9 @@
                 <span class="review-password" v-if="!isValid">As senhas não conferem</span>
 
                 <input v-show="isVisible" class="login-submit" type="submit" value="Login">
+                <span class="create-account" >Not a User?</span>
+                <br/><a class="link-create-account" @click="createAccount()" href="#">Create Account!</a>
+
                 <input @click="new_user()" v-if="!isVisible" class="create-account" type="submit" value="Create">
                 <div class="social">
                     <div v-show="isVisible" @click="handleLogingGoogle" class="go"><i class="fab fa-google"></i> Google
@@ -125,6 +128,9 @@ export default {
                     console.log(resp.data)
                 })
         },
+        createAccount(){
+            this.isVisible =false
+        },
         new_user() {
             if (this.isValid) {
                 axios.post('http://localhost:8080/e-commerce/new-user',
@@ -201,7 +207,7 @@ input[type="submit"] {
     margin-top: 12px;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgb(255, 255, 255, 0.27);
+    background-color: rgba(255, 255, 255, 0.47);
     font-weight: bold;
     font-family: sans-serif;
     border-radius: 25px;
@@ -224,39 +230,39 @@ input[type="submit"] {
     border-radius: 50%;
 }
 
-.shape:first-child {
-    background: linear-gradient(#1845ad,
-            #23a2f6);
-    left: -80px;
-    top: -80px;
-}
+/* .shape:first-child {
+    background: linear-gradient(#d4a373,
+            #d4a373);
+    left: -30px;
+    top: 500px;
+} */
 
-.shape:last-child {
+/* .shape:last-child {
     background: linear-gradient(to right,
-            #ea1538,
-            #ea1538);
+            #d4a373,
+            #d4a373);
     right: -30px;
     bottom: -80px;
-}
+} */
 
 form {
     height: auto;
     width: 400px;
-    background-color: rgba(128, 0, 128, 0.7);
+    background-color: #e9edc9;
     position: absolute;
     transform: translate(-50%, -50%);
-    top: 50%;
+    top: 55%;
     left: 50%;
     border-radius: 10px;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(128, 0, 128, 0.7);
-    box-shadow: 0 0 40px rgba(8, 7, 16, 1);
+    border: 2px solid #e9edc9;
+    box-shadow: 0 0 40px #d4a373;
     padding: 50px 35px;
 }
 
 form * {
     font-family: 'Poppins', sans-serif;
-    color: #ffffff;
+    color: #d4a373;
     letter-spacing: 0.5px;
     outline: none;
     border: none;
@@ -280,7 +286,7 @@ input {
     display: block;
     height: 50px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.07);
+    background-color: rgba(255, 255, 255, 0.47);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;
@@ -295,7 +301,7 @@ input {
     height: 35px;
 } */
 ::placeholder {
-    color: #e5e5e55b;
+    color: #ce8e4f53;
 }
 
 .social {
@@ -308,8 +314,8 @@ input {
     width: 150px;
     border-radius: 3px;
     padding: 5px 10px 10px 5px;
-    background-color: rgba(255, 255, 255, 0.27);
-    color: #eaf0fb;
+    background-color: rgba(255, 255, 255, 0.47);
+    color: #d4a373;
     text-align: center;
 }
 
@@ -337,6 +343,14 @@ input {
 
     animation: view .3s;
 
+}
+
+.create-account{
+    font-size: 10px;
+}
+
+.link-create-account{
+    font-size: 12px;
 }
 
 @keyframes view {

@@ -18,9 +18,7 @@
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </p>
                     <a class="btn btn-outline-dark mt-auto" href="#" @click="pushToSide(c)">Adicionar ao carrinho</a>
-                    <p>
-                        Contagem de Produtos {{ productsCount }}
-                    </p>
+                    
                 </div>
             </div>
 
@@ -166,6 +164,9 @@ export default defineComponent({
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+body{
+  background-color: #FEFAE0;  
 }
 
 h1 {

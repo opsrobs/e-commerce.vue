@@ -40,6 +40,11 @@ export default {
 
     },
     setup() { }
-
 }
 </script>
+<style>
+body{
+    background-color: #FEFAE0;
+}
+
+</style>
