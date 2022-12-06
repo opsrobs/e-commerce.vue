@@ -139,7 +139,7 @@ export default {
                         this.$router.push('/bolo')
                         console.log(resp.data)
                     }).catch(resp => alert(resp.body))
-                    
+
 
             }
         },

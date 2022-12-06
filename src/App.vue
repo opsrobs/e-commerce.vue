@@ -7,7 +7,6 @@
           <h2 class="logo"><span> Doceria da Alegria </span></h2>
           <ul>
             <router-link to="/">Home</router-link>
-            <router-link to="/about">About</router-link>
             <router-link to="/bolo">Bolo</router-link>
             <router-link to="/auth">Login</router-link>
           </ul>
@@ -47,7 +46,6 @@ export default defineComponent({
     const items = reactive(
       [
         { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
-        { label: 'About', icon: 'pi pi-fw pi-calendar', to: '/about' },
         { label: 'Bolos', icon: 'pi pi-fw pi-calendar', to: '/bolo' },
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
       ]
