@@ -4,15 +4,18 @@
     <body>
       <div class="hero">
         <nav>
-          <h2 class="logo"><span> Doceria da Alegria </span></h2>
+          <h2 class="logo">
+           <img src="file:///C:/Users/giulia.conradi/Downloads/imagem.png" width=60 height=40/>
+          Doceria Alegria
+          </h2>
           <ul>
-            <router-link to="/">Home</router-link>
+            <router-link to="/">Início</router-link>
             <router-link to="/about">About</router-link>
-            <router-link to="/bolo">Bolo</router-link>
-            <router-link to="/auth">Login</router-link>
+            <router-link to="/bolo">Produtos</router-link>
+            <!-- <router-link to="/auth">Login</router-link> -->
           </ul>
-          <Sidebar v-model:visible="visibleLeft" position="right">
-            <h2>Produto</h2>
+          <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
+            <h2 id="tProduto">Produtos</h2>
             <ul v-for="p in model.shopInfo.products" :key="p.id_Produto">
               <li>
                 {{ (p.nomeProduto + ' ' + 'R$' + p.preco_produto) }}
@@ -20,7 +23,10 @@
             </ul>
             <Button class="buy" @click="buy(p)">Finalizar Compra</Button>
           </Sidebar>
-          <span class="material-icons" @click="abrirSidenav">shopping_cart</span>
+          <div class="icons">
+          <span id="cart" class="material-icons" @click="abrirSidenav">shopping_cart</span>
+          <span class="material-icons" @click="login">account_circle</span>
+         </div>
           <!--<button type="button">Subscribe</button>-->
         </nav>
       </div>
@@ -36,6 +42,9 @@ import model from './states/chartstate';
 
 export default defineComponent({
   methods: {
+    login(){
+            this.$router.push("/auth")
+          },
     abrirSidenav() {
       this.visibleLeft = true; console.log("deveria funcionar")
     },
@@ -72,13 +81,16 @@ export default defineComponent({
 })
 </script>
 <style>
+#cart{
+  margin-right: 25px;
+}
 #tProduto {
   color: #d4a373;
 }
 
 .buy {
   background-color: #d4a373;
-  color: #CCD5AE;
+  color: #e9edc9;
   display: absolute;
   position: -webkit-sticky;
   position: sticky;
@@ -109,11 +121,12 @@ export default defineComponent({
 }
 
 #sidebar {
-  background-color: #CCD5AE;
+  background-color: #e9edc9;
+  font-family: 'Poppins', sans-serif;
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -129,10 +142,11 @@ nav {
 }
 
 nav a {
-  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
   color: #d4a373;
   padding: 10px 20px;
   text-decoration: none;
+  text-align:end;
 }
 
 #login {
@@ -170,13 +184,13 @@ nav {
 }
 
 .logo {
-  color: white;
+  color: #d4a373;
   font-size: 28px;
+  font-family: var(--bs-body-font-family);
 }
 
 span {
   color: #d4a373;
-  font-weight: bold;
 }
 
 nav ul,
@@ -188,7 +202,6 @@ router-link {
 nav ul li a {
   color: #d4a373;
   text-decoration: none;
-  font-weight: bold;
 }
 
 nav ul li a:hover {

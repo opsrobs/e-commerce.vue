@@ -165,6 +165,9 @@ export default defineComponent({
     padding: 0;
     box-sizing: border-box;
 }
+body{
+  background-color: #FEFAE0;  
+}
 
 h1 {
     text-align: center;

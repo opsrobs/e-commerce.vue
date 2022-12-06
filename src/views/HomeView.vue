@@ -2,34 +2,34 @@
       <div class="home">
         <div ref="container" class="keen-slider">
         <div class="keen-slider__slide number-slide1">
-          <img src="https://source.unsplash.com/random/750x750/?bakery" alt="Beach Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?cake" alt="Street Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?cheescake" alt="Zoo Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?pudding" alt="Beach Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?cakes" alt="Street Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?truffles" alt="Zoo Image" class="item current-item">
         </div>
         <div class="keen-slider__slide number-slide2">
-          <img src="https://source.unsplash.com/random/750x750/?cookie" alt="Animal Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?bakery" alt="Beach Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?coffee" alt="Animal Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?caramel" alt="Animal Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?chocolate" alt="Beach Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?cheescake" alt="Animal Image" class="item current-item">
         </div>
         <div class="keen-slider__slide number-slide3">
-          <img src="https://source.unsplash.com/random/750x750/?cake" alt="Street Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?cheescake" alt="Zoo Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?bread" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?marshmallow" alt="Street Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?gingerbread" alt="Zoo Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?donut" alt="Model Image" class="item current-item">
         </div>
         <div class="keen-slider__slide number-slide4">
-          <img src="https://source.unsplash.com/random/750x750/?coffee" alt="Model Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?bread" alt="Model Image" class="item current-item">
           <img src="https://source.unsplash.com/random/750x750/?cakes" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?mousse" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?pie" alt="Model Image" class="item current-item">
         </div>
         <div class="keen-slider__slide number-slide5">
-          <img src="https://source.unsplash.com/random/750x750/?cakes" alt="Animal Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?coffee" alt="Beach Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?cookie" alt="Animal Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?mousse" alt="Animal Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?cheescake" alt="Beach Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?gingerbread" alt="Animal Image" class="item current-item">
         </div>
         <div class="keen-slider__slide number-slide6">
-          <img src="https://source.unsplash.com/random/750x750/?coffee" alt="Model Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?bread" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?gingerbread" alt="Model Image" class="item current-item">
           <img src="https://source.unsplash.com/random/750x750/?cakes" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?chocolate" alt="Model Image" class="item current-item">
         </div>
       </div>
     <!-- <div class="container">
@@ -150,6 +150,7 @@ body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FEFAE0;
 }
 [class^="number-slide"],
 [class*=" number-slide"] {
