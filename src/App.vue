@@ -10,6 +10,8 @@
             <router-link to="/about">About</router-link>
             <router-link to="/bolo">Bolo</router-link>
             <router-link to="/auth">Login</router-link>
+            <img src="https://imgur.com/H1X2vpA"/>
+
           </ul>
           <Sidebar v-model:visible="visibleLeft" position="right">
             <h2>Produto</h2>

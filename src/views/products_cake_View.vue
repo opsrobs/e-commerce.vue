@@ -65,7 +65,7 @@ export default defineComponent({
                 this.model.cards = resp.data.content
                 console.log(resp.data)
 
-            })
+            }).catch(error => console.log(error))
     },
     setup() {
         const check = () => {
