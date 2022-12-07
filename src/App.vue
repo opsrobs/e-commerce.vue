@@ -5,13 +5,13 @@
       <div class="hero">
         <nav>
           <h2 class="logo">
-           <img src="file:///C:/Users/giulia.conradi/Downloads/imagem.png" width=60 height=40/>
-          Doceria Alegria
+           <img :src="imagem" border:none height="150" width="150"/>
+          DOCERIA ALEGRIA
           </h2>
           <ul>
-            <router-link to="/">Início</router-link>
+            <router-link to="/">INÍCIO</router-link>
             <router-link to="/about">About</router-link>
-            <router-link to="/bolo">Produtos</router-link>
+            <router-link to="/bolo">PRODUTOS</router-link>
             <!-- <router-link to="/auth">Login</router-link> -->
           </ul>
           <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
@@ -39,6 +39,8 @@ import Sidebar from 'primevue/sidebar';
 import 'primeicons/primeicons.css';
 import { defineComponent, reactive, ref } from 'vue';
 import model from './states/chartstate';
+import imagem from '../src/assets/imagem.png';
+
 
 export default defineComponent({
   methods: {
@@ -61,13 +63,15 @@ export default defineComponent({
         { label: 'Inicio', icon: 'pi pi-fw pi-pencil', to: '/auth' }
       ]
     )
+   
     const visibleLeft = ref(
       false
     )
     return {
       model,
       items,
-      visibleLeft
+      visibleLeft,
+      imagem
     }
   },
   components: {
