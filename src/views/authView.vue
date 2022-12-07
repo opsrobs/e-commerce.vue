@@ -10,12 +10,12 @@
                 <h3 v-if="isVisible">{{ checkTittle() }}</h3>
 
                 <label class="signup" v-if="!isVisible">Nome</label>
-                <input class="signup" v-if="!isVisible" type="text" v-model="user.nome" required
-                    placeholder="Nome" id="nome">
+                <input class="signup" v-if="!isVisible" type="text" v-model="user.nome" required placeholder="Nome"
+                    id="nome">
 
                 <label v-if="!isVisible">CPF</label>
-                <input v-if="!isVisible" type="text" name="ao_cpf" maxlength="11" v-model="user.cpf_cnpj" required placeholder="000.000.000-00"
-                    id="cpf">
+                <input v-if="!isVisible" type="text" name="ao_cpf" maxlength="11" v-model="user.cpf_cnpj" required
+                    placeholder="000.000.000-00" id="cpf">
 
                 <label v-if="!isVisible">Data de nascimento</label>
                 <input v-if="!isVisible" type="text" v-model="user.data_nasc" required placeholder="dd/mm/aaaa"
@@ -33,8 +33,8 @@
                 <span class="review-password" v-if="!isValid">As senhas não conferem</span>
 
                 <input v-show="isVisible" class="login-submit" type="submit" value="Login">
-                <span class="create-account" >Not a User?</span>
-                <br/><a class="link-create-account" @click="createAccount()" href="#">Create Account!</a>
+                <span class="create-account">Not a User?</span>
+                <br /><a class="link-create-account" @click="createAccount()" href="#">Create Account!</a>
 
                 <input @click="new_user()" v-if="!isVisible" class="create-account" type="submit" value="Create">
                 <div class="social">
@@ -54,6 +54,7 @@
 </template>
 <script>
 import firebaseConfig from '../../firebaseConfig';
+import userChart from './../states/chartstate'
 import axios from 'axios';
 import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, TwitterAuthProvider, GithubAuthProvider } from "firebase/auth";
 
@@ -76,11 +77,11 @@ export default {
                 userName: '',
                 password: '',
                 roles: [
-                {
-                    roleId: 1,
-                    roleName: "ROLE_USER"
-                }
-            ]
+                    {
+                        roleId: 1,
+                        roleName: "ROLE_USER"
+                    }
+                ]
             },
             isVisible: true,
             //=====================
@@ -92,10 +93,11 @@ export default {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     //const user = result.user;
+
                     console.log(result._tokenResponse)
 
                     this.user.nome = result._tokenResponse.displayName
-                   // this.user.last_name = result._tokenResponse.lastName
+                    // this.user.last_name = result._tokenResponse.lastName
                     this.user.userName = result._tokenResponse.email
                     // verificar se há ou não username. 
                     // Caso não haja, criar método para validar quak campo deve ser apresentado
@@ -119,17 +121,37 @@ export default {
             axios.get('http://localhost:8080/e-commerce/',
                 {
                     auth: {
-                        username: this.user.username,
+                        username: this.user.userName,
                         password: this.user.password
                     },
                 })
                 .then(resp => {
-                    this.$router.push('/bolo')
                     console.log(resp.data)
-                })
+                    userChart.contentPerson.pessoa.userName = this.user.userName
+                    userChart.pwd = this.user.password
+                    this.mountUser(this.user.userName)
+                    console.log(userChart.pwd)
+                    this.$router.push('/bolo')
+
+                    // console.log(this.user.userName)
+                }).catch((error => console.log(error)))
         },
-        createAccount(){
-            this.isVisible =false
+        async mountUser(userName) {
+            console.log(userChart.contentPerson.pessoa.userName)
+            await axios.get(`http://localhost:8080/e-commerce/user/${userName}`,
+                {
+                    auth: {
+                        username: userChart.contentPerson.pessoa.userName,
+                        password: userChart.pwd
+                    },
+                })
+                .then(resp => {
+                    userChart.contentPerson.pessoa = resp.data
+                    console.log(userChart.contentPerson.pessoa)
+                }).catch(resp => console.log(resp))
+        },
+        createAccount() {
+            this.isVisible = false
         },
         new_user() {
             if (this.isValid) {
@@ -139,8 +161,6 @@ export default {
                         this.$router.push('/bolo')
                         console.log(resp.data)
                     }).catch(resp => alert(resp.body))
-                    
-
             }
         },
         handleSignOut() {
@@ -159,7 +179,6 @@ export default {
                     //const user = result.user;
                     console.log(result)
                     console.log(result._tokenResponse)
-
                     this.user = result.user.displayName;
                     this.isVisible = false
                 }).catch((error) => {
@@ -181,7 +200,7 @@ export default {
         },
         checkTittle() {
             return this.isVisible ? 'Login Here' : 'Create account'
-        }
+        },
     },
     components: {
     }
@@ -212,9 +231,9 @@ input[type="submit"] {
     font-family: sans-serif;
     border-radius: 25px;
     width: 45%
-}*/
+}
 
-.background {
+*/ .background {
     width: 430px;
     height: auto;
     position: absolute;
@@ -345,11 +364,11 @@ input {
 
 }
 
-.create-account{
+.create-account {
     font-size: 10px;
 }
 
-.link-create-account{
+.link-create-account {
     font-size: 12px;
 }
 

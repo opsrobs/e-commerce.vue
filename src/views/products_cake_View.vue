@@ -1,11 +1,10 @@
 <template >
     <div>
-<!-- <h1>{{model.cards}}</h1> -->
+        <!-- <h1>{{model.cards}}</h1> -->
         <div>
+            <span v-for="p in model.categories" :key="p.id">
+                <toggle-button v-model="p.nomeTipo" :onLabel="p.nomeTipo" :offLabel="p.nomeTipo" /> </span>
 
-            <row v-for="p in model.categories" :key="p.id_tipo_produto">
-                <toggle-button v-model="p.status" :onLabel="p.nome_tipo_produto" :offLabel="p.nome_tipo_produto" />
-            </row>
         </div>
         <!-- TODO: Centralizar os componentes dos cards -->
         <div class="card-group" v-for="c in model.cards" :key="c.id">
@@ -15,14 +14,15 @@
                     <h5 class="card-title">{{ c.nomeProduto }}</h5>
                     <p class="card-text">{{ lengthDescription(c.descProduto) }}</p>
                     <p class="card-text">
-                        <small class="text-muted">Last updated 3 mins ago</small>
+                        <small class="text-muted">{{ 'R$ ' + c.preco_produto }}</small>
                     </p>
                     <a class="btn btn-outline-dark mt-auto" href="#" @click="pushToSide(c)">Adicionar ao carrinho</a>
-                    
+
                 </div>
             </div>
-
         </div>
+        <!-- <input v-model="date">
+        <button @click="toDate(date)"></button> -->
 
     </div>
 
@@ -31,7 +31,7 @@
 
 <script>
 // import Carousel from 'primevue/carousel'
-// import ToggleButton from 'primevue/togglebutton'
+import ToggleButton from 'primevue/togglebutton'
 import axios from 'axios';
 import model from './../states/chartstate'
 import { defineComponent } from "vue";
@@ -54,18 +54,18 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     mounted() {
-        // axios.get("https://run.mocky.io/v3/80ef2f6b-3c85-4ce8-967f-959ca66e1379")
-        //     .then(resp => {
-        //         this.model.categories = resp.data
-        //         console.log(resp.data)
+        axios.get("http://localhost:8080/api/user-categories")
+            .then(resp => {
+                this.model.categories = resp.data.content
+                console.log(resp.data.content)
 
-        //     })
+            })
         axios.get("http://localhost:8080/api/user-products")
             .then(resp => {
                 this.model.cards = resp.data.content
                 console.log(resp.data)
 
-            }).catch(err => console.log(err))
+            }).catch(error => console.log(error))
     },
     setup() {
         const check = () => {
@@ -123,31 +123,103 @@ export default defineComponent({
         // )
         return {
             check,
+            date: null,
             isleft,
             isRight,
             carousel,
             lengthDescription,
-            model
+            model,
+            value: null,
+            pessoa:{
+                usuario: '',
+            },
+            pedido: {
+                data_pedido: null,
+                status: null,
+                valor_total: 11.20,
+                valor_frete: 0.0,
+                data_entrega: 1654884910,
+                produtos: []
+            }
         }
     },
     components: {
-        // ToggleButton,
+        ToggleButton,
     },
     methods: {
         pushToSide(p) {
             this.salvarProduto(p)
             model.shopInfo.products.push(p)
+            this.createClient()
+            console.log(model.contentPerson.pessoa)
+            // this.cadPedido(p)
+
+        },
+        sumValue(tot) {
+            let valor = tot
+            this.value += valor
+            console.log(tot)
+            console.log(this.value)
+            return this.value
+
         },
         salvarProduto(p) {
 
             // Pega a lista já cadastrada, se não houver vira um array vazio
             var lista_produtos = JSON.parse(localStorage.getItem('lista-produtos') || '[]');
-            // Adiciona pessoa ao cadastro
+            // Adiciona contentPerson.pessoa ao cadastro
             lista_produtos.push(p);
 
             // Salva a lista alterada    
             localStorage.setItem("lista-produtos", JSON.stringify(lista_produtos));
             console.log('Salva com sucesso.');
+        },
+        toDate(inputDate) {
+            const str = inputDate
+            const [day, month, year] = str.split('/');
+            const date = new Date(+year, month - 1, +day);
+            console.log(date)
+            return date.getTime()
+        },
+        cadPedido(p) {
+            this.pedido.data_pedido = this.toDate(this.dateToDay()),
+                this.pedido.status = 'PENDENTE',
+                this.pedido.valor_total = this.sumValue(p.preco_produto),
+                this.pedido.valor_frete = 0.0,
+                this.pedido.data_entrega = this.toDate(this.dateToDay()),
+                this.pedido.produtos.push(p),
+                console.log(this.toDate(this.dateToDay()))
+            console.log(JSON.stringify(this.pedido))
+        },
+        dateToDay() {
+            var today = new Date();
+            var date = today.getDate(+3) + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+            //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date // + ' ' + time;
+
+            return dateTime
+        },
+        createClient() {
+            // this.model.contentPerson.pessoa
+            let personDataString = JSON.stringify(this.model.contentPerson)
+            console.log(JSON.stringify(this.model.contentPerson))
+            console.log(JSON.parse(personDataString))
+            console.log(JSON.stringify(this.model.pwd))
+            axios.post('http://localhost:8080/api/user-cliente',JSON.parse(personDataString), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
+                {
+                    auth: {
+                        username: model.contentPerson.pessoa.userName,
+                        password: model.pwd
+                    },
+                })
+                .then(resp => {
+                    // this.$router.push('/bolo')
+                    console.log(resp.data)
+                }).catch(error => {
+                    console.log(error.request);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                })
         },
     },
     computed: {
@@ -165,8 +237,9 @@ export default defineComponent({
     padding: 0;
     box-sizing: border-box;
 }
-body{
-  background-color: #FEFAE0;  
+
+body {
+    background-color: #FEFAE0;
 }
 
 h1 {
