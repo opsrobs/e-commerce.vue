@@ -12,6 +12,21 @@ export default reactive ({
             cards: [],
             shopInfo: {
                 products: []
-            }
+            },
+            pwd:'',
+            userLogged: {
+                userID:null,
+                nome: '',
+                cpf_cnpj: '',
+                data_nasc: '',
+                userName: '',
+                password: '',
+                roles: [
+                {
+                    roleId: 1,
+                    roleName: "ROLE_USER"
+                }
+            ]
+            },
 
 })
