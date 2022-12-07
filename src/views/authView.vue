@@ -119,14 +119,14 @@ export default {
             axios.get('http://localhost:8080/e-commerce/',
                 {
                     auth: {
-                        username: this.user.username,
+                        username: this.user.userName,
                         password: this.user.password
                     },
                 })
                 .then(resp => {
                     this.$router.push('/bolo')
                     console.log(resp.data)
-                })
+                }).catch((error => console.log(error)))
         },
         createAccount(){
             this.isVisible =false
