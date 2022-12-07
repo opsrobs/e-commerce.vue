@@ -10,12 +10,12 @@
                 <h3 v-if="isVisible">{{ checkTittle() }}</h3>
 
                 <label class="signup" v-if="!isVisible">Nome</label>
-                <input class="signup" v-if="!isVisible" type="text" v-model="user.nome" required
-                    placeholder="Nome" id="nome">
+                <input class="signup" v-if="!isVisible" type="text" v-model="user.nome" required placeholder="Nome"
+                    id="nome">
 
                 <label v-if="!isVisible">CPF</label>
-                <input v-if="!isVisible" type="text" name="ao_cpf" maxlength="11" v-model="user.cpf_cnpj" required placeholder="000.000.000-00"
-                    id="cpf">
+                <input v-if="!isVisible" type="text" name="ao_cpf" maxlength="11" v-model="user.cpf_cnpj" required
+                    placeholder="000.000.000-00" id="cpf">
 
                 <label v-if="!isVisible">Data de nascimento</label>
                 <input v-if="!isVisible" type="text" v-model="user.data_nasc" required placeholder="dd/mm/aaaa"
@@ -33,8 +33,8 @@
                 <span class="review-password" v-if="!isValid">As senhas não conferem</span>
 
                 <input v-show="isVisible" class="login-submit" type="submit" value="Login">
-                <span class="create-account" >Not a User?</span>
-                <br/><a class="link-create-account" @click="createAccount()" href="#">Create Account!</a>
+                <span class="create-account">Not a User?</span>
+                <br /><a class="link-create-account" @click="createAccount()" href="#">Create Account!</a>
 
                 <input @click="new_user()" v-if="!isVisible" class="create-account" type="submit" value="Create">
                 <div class="social">
@@ -54,6 +54,7 @@
 </template>
 <script>
 import firebaseConfig from '../../firebaseConfig';
+import userChart from './../states/chartstate'
 import axios from 'axios';
 import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, TwitterAuthProvider, GithubAuthProvider } from "firebase/auth";
 
@@ -76,11 +77,11 @@ export default {
                 userName: '',
                 password: '',
                 roles: [
-                {
-                    roleId: 1,
-                    roleName: "ROLE_USER"
-                }
-            ]
+                    {
+                        roleId: 1,
+                        roleName: "ROLE_USER"
+                    }
+                ]
             },
             isVisible: true,
             //=====================
@@ -92,10 +93,11 @@ export default {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     //const user = result.user;
+
                     console.log(result._tokenResponse)
 
                     this.user.nome = result._tokenResponse.displayName
-                   // this.user.last_name = result._tokenResponse.lastName
+                    // this.user.last_name = result._tokenResponse.lastName
                     this.user.userName = result._tokenResponse.email
                     // verificar se há ou não username. 
                     // Caso não haja, criar método para validar quak campo deve ser apresentado
@@ -119,17 +121,37 @@ export default {
             axios.get('http://localhost:8080/e-commerce/',
                 {
                     auth: {
-                        username: this.user.username,
+                        username: this.user.userName,
                         password: this.user.password
                     },
                 })
                 .then(resp => {
-                    this.$router.push('/bolo')
                     console.log(resp.data)
-                })
+                    userChart.userLogged.userName = this.user.userName
+                    userChart.pwd = this.user.password
+                    this.mountUser(this.user.userName)
+                    console.log(userChart.pwd)
+                    // this.$router.push('/bolo')
+
+                    // console.log(this.user.userName)
+                }).catch((error => console.log(error)))
         },
-        createAccount(){
-            this.isVisible =false
+        async mountUser(userName) {
+            console.log(userChart.userLogged.userName)
+            await axios.get(`http://localhost:8080/e-commerce/user/${userName}`,
+                {
+                    auth: {
+                        username: userChart.userLogged.userName,
+                        password: userChart.pwd
+                    },
+                })
+                .then(resp => {
+                    userChart.userLogged = resp.data
+                    console.log(userChart.userLogged)
+                }).catch(resp => console.log(resp))
+        },
+        createAccount() {
+            this.isVisible = false
         },
         new_user() {
             if (this.isValid) {
@@ -139,8 +161,11 @@ export default {
                         this.$router.push('/bolo')
                         console.log(resp.data)
                     }).catch(resp => alert(resp.body))
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 5f05e9bbe67d7b6e999759f7680d5c8f26186eb4
             }
         },
         handleSignOut() {
@@ -159,7 +184,6 @@ export default {
                     //const user = result.user;
                     console.log(result)
                     console.log(result._tokenResponse)
-
                     this.user = result.user.displayName;
                     this.isVisible = false
                 }).catch((error) => {
@@ -181,7 +205,7 @@ export default {
         },
         checkTittle() {
             return this.isVisible ? 'Login Here' : 'Create account'
-        }
+        },
     },
     components: {
     }
@@ -207,14 +231,14 @@ input[type="submit"] {
     margin-top: 12px;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgb(255, 255, 255, 0.27);
+    background-color: rgba(255, 255, 255, 0.47);
     font-weight: bold;
     font-family: sans-serif;
     border-radius: 25px;
     width: 45%
-}*/
+}
 
-.background {
+*/ .background {
     width: 430px;
     height: auto;
     position: absolute;
@@ -230,39 +254,39 @@ input[type="submit"] {
     border-radius: 50%;
 }
 
-.shape:first-child {
-    background: linear-gradient(#1845ad,
-            #23a2f6);
-    left: -80px;
-    top: -80px;
-}
+/* .shape:first-child {
+    background: linear-gradient(#d4a373,
+            #d4a373);
+    left: -30px;
+    top: 500px;
+} */
 
-.shape:last-child {
+/* .shape:last-child {
     background: linear-gradient(to right,
-            #ea1538,
-            #ea1538);
+            #d4a373,
+            #d4a373);
     right: -30px;
     bottom: -80px;
-}
+} */
 
 form {
     height: auto;
     width: 400px;
-    background-color: rgba(128, 0, 128, 0.7);
+    background-color: #e9edc9;
     position: absolute;
     transform: translate(-50%, -50%);
-    top: 50%;
+    top: 55%;
     left: 50%;
     border-radius: 10px;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(128, 0, 128, 0.7);
-    box-shadow: 0 0 40px rgba(8, 7, 16, 1);
+    border: 2px solid #e9edc9;
+    box-shadow: 0 0 40px #d4a373;
     padding: 50px 35px;
 }
 
 form * {
     font-family: 'Poppins', sans-serif;
-    color: #ffffff;
+    color: #d4a373;
     letter-spacing: 0.5px;
     outline: none;
     border: none;
@@ -286,7 +310,7 @@ input {
     display: block;
     height: 50px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.07);
+    background-color: rgba(255, 255, 255, 0.47);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;
@@ -301,7 +325,7 @@ input {
     height: 35px;
 } */
 ::placeholder {
-    color: #e5e5e55b;
+    color: #ce8e4f53;
 }
 
 .social {
@@ -314,8 +338,8 @@ input {
     width: 150px;
     border-radius: 3px;
     padding: 5px 10px 10px 5px;
-    background-color: rgba(255, 255, 255, 0.27);
-    color: #eaf0fb;
+    background-color: rgba(255, 255, 255, 0.47);
+    color: #d4a373;
     text-align: center;
 }
 
@@ -345,11 +369,11 @@ input {
 
 }
 
-.create-account{
+.create-account {
     font-size: 10px;
 }
 
-.link-create-account{
+.link-create-account {
     font-size: 12px;
 }
 
