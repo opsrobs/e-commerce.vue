@@ -130,7 +130,7 @@ export default defineComponent({
             lengthDescription,
             model,
             value: null,
-            pessoa:{
+            pessoa: {
                 usuario: '',
             },
             pedido: {
@@ -150,9 +150,11 @@ export default defineComponent({
         pushToSide(p) {
             this.salvarProduto(p)
             model.shopInfo.products.push(p)
-            this.createClient()
+            // this.createClient()
             console.log(model.contentPerson.pessoa)
             // this.cadPedido(p)
+            this.getIdCliente(this.model.contentPerson.pessoa.userID)
+            console.log(JSON.stringify(this.model.contentPerson))
 
         },
         sumValue(tot) {
@@ -182,16 +184,17 @@ export default defineComponent({
             return date.getTime()
         },
         cadPedido(p) {
-            this.pedido.data_pedido = this.toDate(this.dateToDay()),
-                this.pedido.status = 'PENDENTE',
-                this.pedido.valor_total = this.sumValue(p.preco_produto),
-                this.pedido.valor_frete = 0.0,
-                this.pedido.data_entrega = this.toDate(this.dateToDay()),
-                this.pedido.produtos.push(p),
+            model.novoPedido.pedido.data_pedido = this.toDate(this.dateToDay()),
+                model.novoPedido.pedido.status = 'PENDENTE',
+                model.novoPedido.pedido.valor_total = this.sumValue(p.preco_produto),
+                model.novoPedido.pedido.valor_frete = 0.0,
+                model.novoPedido.pedido.data_entrega = this.toDate(this.dateToDay()),
+                model.novoPedido.pedido.produtos.push(p),
                 console.log(this.toDate(this.dateToDay()))
-            console.log(JSON.stringify(this.pedido))
+            console.log(JSON.stringify(model.novoPedido))
         },
         dateToDay() {
+            
             var today = new Date();
             var date = today.getDate(+3) + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
             //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -205,7 +208,7 @@ export default defineComponent({
             console.log(JSON.stringify(this.model.contentPerson))
             console.log(JSON.parse(personDataString))
             console.log(JSON.stringify(this.model.pwd))
-            axios.post('http://localhost:8080/api/user-cliente',JSON.parse(personDataString), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
+            axios.post('http://localhost:8080/api/user-cliente', JSON.parse(personDataString), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
                 {
                     auth: {
                         username: model.contentPerson.pessoa.userName,
@@ -221,6 +224,20 @@ export default defineComponent({
                     console.log(error.response.headers);
                 })
         },
+        async getIdCliente(id){
+            await axios.get(`http://localhost:8080/api/user-cliente/user/${id}`,
+                {
+                    auth: {
+                        username: model.contentPerson.pessoa.userName,
+                        password: model.pwd
+                    },
+                })
+                .then(resp => {
+                    model.client.cliente.idCliente = resp.data.idCliente
+                    console.log(model.contentPerson.pessoa)
+                    console.log(model.client.cliente.idCliente)
+                }).catch(resp => console.log(resp))
+        }
     },
     computed: {
         productsCount() {
