@@ -11,7 +11,7 @@
           <ul>
             <router-link to="/">INÍCIO</router-link>
             <!-- <router-link to="/about">About</router-link> -->
-            <router-link to="/bolo">PRODUTOS</router-link>
+            <router-link to="/bolo">PRODUTOS </router-link>
             <!-- <router-link to="/auth">Login</router-link> -->
           </ul>
           <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
@@ -24,46 +24,18 @@
             <Button class="buy" @click="buy(p)">Finalizar Compra</Button>
           </Sidebar>
           <div class="icons">
+            <a href="#" class="notification">
             <span id="cart" class="material-icons" @click="abrirSidenav">shopping_cart</span>
+            <span class="badge">{{productsCount}}</span>  
+            </a>
             <span class="material-icons" @click="login">account_circle</span>
+            
           </div>
           <!--<button type="button">Subscribe</button>-->
         </nav>
       </div>
     </body>
     <router-view />
-    <footer>
-      <div class="main-content">
-        <div class="left box">
-          <h2>Sobre nós</h2>
-          <div class="content">
-            <p>Doces feitos com muito amor <br/> para a sua família! ❤</p>
-          <div class="social">
-            <a href="#"><span class="fab fa-facebook-f"></span></a>
-            <a href="#"><span class="fab fa-twitter"></span></a>
-            <a href="#"><span class="fab fa-instagram"></span></a>
-          </div>
-        </div><!--content-->
-        </div><!--Left box-->
-        <div class="center box">
-          <h2>Contato</h2>
-          <div class="content">
-            <div class="place">
-              <span class="fas fa-map-marker"></span>
-              <span class="text">Rua das Palmeiras, Blumenau</span>
-            </div>
-            <div class="phone">
-              <span class="fas fa-phone"></span>
-              <span class="text">+55 (47) 9 9999-9999</span>
-            </div>
-            <div class="email">
-              <span class="fas fa-envelope"></span>
-              <span class="text">doceria@alegria.com.br</span>
-            </div>
-          </div>
-        </div><!--center-->
-      </div><!--main-content-->
-    </footer>
   </div>
 </template>
 <script>
@@ -117,100 +89,28 @@ export default defineComponent({
 })
 </script>
 <style>
-
-.main-content{
-  background-color: #d4a373;
-  color: #e9edc9;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  font-family: 'Poppins', sans-serif;;
-}
-
-.main-content .box{
-  flex-basis:50%;
-  padding: 10px 20px;
-}
-
-.box h2{
-  font-size: 18px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-.box .content{
-  margin: 20px 0 0 0;
+.notification {
+  color: white;
+  text-decoration: none;
+  padding: 15px 26px;
   position: relative;
+  display: inline-block;
+  border-radius: 2px;
 }
-/* .box .content:after{
-  position: absolute;
-  content: '';
-  width: 15%;
-  height: 2px;
-  background:#ea1538;
-  top: -10px;
-} */
-.left .content .social{
-  margin: 20px 0 0 0;
-}
-/* .box .content:before{
-  position: absolute;
-  content: '';
-  height: 2px;
-  width: 100%;
-  background: #2c3e50;
-  top: 10px;
 
-} */
-.left .content .social a{
-  padding:0 2px;
-}
-.left .content .social a span{
-  width: 40px;
-  height: 40px;
-  background: #e9edc9;
-  text-align: center;
-  line-height: 40px;
-  border-radius: 5px;
-  font-size: 18px;
-  transition: 0.3s;
-} 
-.left .content .social a span:hover{
-  background: #7f5539;
-}
-/* .left .content p{
-  text-align: justify;
-} */
-.center .content .fas{
-  font-size: 15px;
-  background-color: #e9edc9;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  text-align: center;
+.notification .badge {
+  font-size: 10px;
+  position: absolute;
+  top: 1px;
+  right: 45px;
+  padding: 3px 5px;
   border-radius: 50%;
-  transition: 0.3s;
-  cursor: pointer;
+  background: #7f5539;
+  color: white;
 }
-.center .content .fas:hover{
-  background-color: #7f5539;
+#logomarca{
+  margin-right: 50px;
 }
-.center .content .text{
-    font-size: 15px;
-    font-weight: 500;
-    padding-left: 10px;
-    color: #e9edc9;
-}
-.center .content .phone{
-  margin: 10px 0;
-}
-.center .content .msg{
-  margin-top: 10px
-}
-.social{
-  color: #e9edc9;
-}
-
 #cart {
   margin-right: 25px;
 }
