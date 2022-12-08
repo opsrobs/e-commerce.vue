@@ -32,20 +32,39 @@
           <img src="https://source.unsplash.com/random/750x750/?chocolate" alt="Model Image" class="item current-item">
         </div>
       </div>
-    <!-- <div class="container">
-       <button @click="isleft()" class="arrow-left control" aria-label="Previous image">◀</button>
-      <button @click="isRight()" class="arrow-right control" aria-label="Next Image">▶</button>
-      <div class="gallery-wrapper">
-        <div class="gallery">
-
-          
-          
-          
-          
-        </div>
-      </div>
-    </div> -->
       </div> 
+      <footer>
+      <div class="main-content">
+        <div class="left box">
+          <h2>Sobre nós</h2>
+          <div class="content">
+            <p>Doces feitos com muito amor <br/> para a sua família! ❤</p>
+          <div class="social">
+            <a href="#"><span class="fab fa-facebook-f"></span></a>
+            <a href="#"><span class="fab fa-twitter"></span></a>
+            <a href="#"><span class="fab fa-instagram"></span></a>
+          </div>
+        </div><!--content-->
+        </div><!--Left box-->
+        <div class="center box">
+          <h2>Contato</h2>
+          <div class="content">
+            <div class="place">
+              <span class="fas fa-map-marker"></span>
+              <span class="text">Rua das Palmeiras, Blumenau</span>
+            </div>
+            <div class="phone">
+              <span class="fas fa-phone"></span>
+              <span class="text">+55 (47) 9 9999-9999</span>
+            </div>
+            <div class="email">
+              <span class="fas fa-envelope"></span>
+              <span class="text">doceria@alegria.com.br</span>
+            </div>
+          </div>
+        </div><!--center-->
+      </div><!--main-content-->
+    </footer>
 </template>
 
 <script>
@@ -145,6 +164,98 @@ export default {
 }
 </script>
 <style>
+.main-content{
+  background-color: #d4a373;
+  color: #e9edc9;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  font-family: 'Poppins', sans-serif;;
+}
+
+.main-content .box{
+  flex-basis:50%;
+  padding: 10px 20px;
+}
+
+.box h2{
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.box .content{
+  margin: 20px 0 0 0;
+  position: relative;
+}
+/* .box .content:after{
+  position: absolute;
+  content: '';
+  width: 15%;
+  height: 2px;
+  background:#ea1538;
+  top: -10px;
+} */
+.left .content .social{
+  margin: 20px 0 0 0;
+}
+/* .box .content:before{
+  position: absolute;
+  content: '';
+  height: 2px;
+  width: 100%;
+  background: #2c3e50;
+  top: 10px;
+
+} */
+.left .content .social a{
+  padding:0 2px;
+}
+.left .content .social a span{
+  width: 40px;
+  height: 40px;
+  background: #e9edc9;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 5px;
+  font-size: 18px;
+  transition: 0.3s;
+} 
+.left .content .social a span:hover{
+  background: #7f5539;
+}
+/* .left .content p{
+  text-align: justify;
+} */
+.center .content .fas{
+  font-size: 15px;
+  background-color: #e9edc9;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.center .content .fas:hover{
+  background-color: #7f5539;
+}
+.center .content .text{
+    font-size: 15px;
+    font-weight: 500;
+    padding-left: 10px;
+    color: #e9edc9;
+}
+.center .content .phone{
+  margin: 10px 0;
+}
+.center .content .msg{
+  margin-top: 10px
+}
+.social{
+  color: #e9edc9;
+}
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
