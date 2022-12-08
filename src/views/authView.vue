@@ -154,6 +154,7 @@ export default {
             this.isVisible = false
         },
         new_user() {
+            console.log(this.user)
             if (this.isValid) {
                 axios.post('http://localhost:8080/e-commerce/new-user',
                     this.user)
@@ -179,7 +180,7 @@ export default {
                     //const user = result.user;
                     console.log(result)
                     console.log(result._tokenResponse)
-                    this.user = result.user.displayName;
+                    this.user.nome = result.user.displayName;
                     this.isVisible = false
                 }).catch((error) => {
                     console.log(error)

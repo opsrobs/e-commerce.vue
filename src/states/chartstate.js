@@ -30,32 +30,34 @@ export default reactive({
             ]
         }
     },
-    selectedProducts:{
+    selectedProducts: {
         produto: {
-            id_Produto:null
+            id_Produto: null
         }
     },
-    userAddress:{
-        endereco:{
-            id:0
+    userAddress: {
+        endereco: {
+            id: 0
         }
     },
-    client:{
-        cliente:{
+    client: {
+        cliente: {
             idCliente: null
         }
     },
-    novoPedido: {
-        pedido: {
-            data_pedido: null,
-            status: null,
-            valor_total: 11.20,
-            valor_frete: 0.0,
-            data_entrega: 1654884910,
-            produtos: [],
-            endereco: null,
-            cliente: null,
+
+    pedido: {
+        data_pedido: null,
+        status: null,
+        valor_total: 11.20,
+        valor_frete: 0.0,
+        data_entrega: 1654884910,
+        produtos: [],
+        // endereco: null, descomentar se tiver o cadastro de endereco
+        cliente: {
+            idCliente: null
         }
+
     }
 
 })

@@ -150,11 +150,10 @@ export default defineComponent({
         pushToSide(p) {
             this.salvarProduto(p)
             model.shopInfo.products.push(p)
-            // this.createClient()
-            console.log(model.contentPerson.pessoa)
-            // this.cadPedido(p)
-            this.getIdCliente(this.model.contentPerson.pessoa.userID)
-            console.log(JSON.stringify(this.model.contentPerson))
+            this.createClient()
+            console.log('<---------------------------------------------------------------->')
+            this.cadPedido(p)
+            // console.log(JSON.stringify(this.model.contentPerson))
 
         },
         sumValue(tot) {
@@ -184,17 +183,20 @@ export default defineComponent({
             return date.getTime()
         },
         cadPedido(p) {
-            model.novoPedido.pedido.data_pedido = this.toDate(this.dateToDay()),
-                model.novoPedido.pedido.status = 'PENDENTE',
-                model.novoPedido.pedido.valor_total = this.sumValue(p.preco_produto),
-                model.novoPedido.pedido.valor_frete = 0.0,
-                model.novoPedido.pedido.data_entrega = this.toDate(this.dateToDay()),
-                model.novoPedido.pedido.produtos.push(p),
-                console.log(this.toDate(this.dateToDay()))
+            model.pedido.data_pedido = this.toDate(this.dateToDay()),
+                model.pedido.status = 'PENDENTE',
+                model.pedido.valor_total = this.sumValue(p.preco_produto),
+                model.pedido.valor_frete = 0.0,
+                model.pedido.data_entrega = this.toDate(this.dateToDay()),
+                model.pedido.produtos.push(p),
+                model.pedido.cliente.idCliente = model.client.cliente.idCliente
+            console.log(model.client.cliente.idCliente)
+            // console.log(this.toDate(this.dateToDay()))
             console.log(JSON.stringify(model.novoPedido))
+            this.criarPedido()
         },
         dateToDay() {
-            
+
             var today = new Date();
             var date = today.getDate(+3) + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
             //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -202,41 +204,52 @@ export default defineComponent({
 
             return dateTime
         },
-        createClient() {
+        async createClient() {
             // this.model.contentPerson.pessoa
-            let personDataString = JSON.stringify(this.model.contentPerson)
-            console.log(JSON.stringify(this.model.contentPerson))
-            console.log(JSON.parse(personDataString))
-            console.log(JSON.stringify(this.model.pwd))
-            axios.post('http://localhost:8080/api/user-cliente', JSON.parse(personDataString), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
-                {
-                    auth: {
-                        username: model.contentPerson.pessoa.userName,
-                        password: model.pwd
-                    },
-                })
-                .then(resp => {
-                    // this.$router.push('/bolo')
-                    console.log(resp.data)
-                }).catch(error => {
-                    console.log(error.request);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                })
+            if(model.client.cliente.idCliente === null){
+                let personDataString = JSON.stringify(this.model.contentPerson)
+                console.log(JSON.stringify(this.model.contentPerson))
+                console.log(JSON.parse(personDataString))
+                console.log(JSON.stringify(this.model.pwd))
+                await axios.post('http://localhost:8080/api/user-cliente', JSON.parse(personDataString), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
+                    {
+                        auth: {
+                            username: model.contentPerson.pessoa.userName,
+                            password: model.pwd
+                        },
+                    })
+                    .then(resp => {
+                        model.client.cliente.idCliente = resp.data.idCliente
+                        console.log(resp.data.idCliente)
+                    }).catch(error => {
+                        console.log(error.request);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    })
+
+            }
+            else{
+                console.log(model.client.cliente.idCliente)
+                return model.client.cliente.idCliente
+            }
         },
-        async getIdCliente(id){
-            await axios.get(`http://localhost:8080/api/user-cliente/user/${id}`,
-                {
-                    auth: {
-                        username: model.contentPerson.pessoa.userName,
-                        password: model.pwd
-                    },
-                })
-                .then(resp => {
-                    model.client.cliente.idCliente = resp.data.idCliente
-                    console.log(model.contentPerson.pessoa)
-                    console.log(model.client.cliente.idCliente)
-                }).catch(resp => console.log(resp))
+        async criarPedido(){
+            let strigToJson = JSON.stringify(this.model.pedido)
+            await axios.post('http://localhost:8080/api/user-pedido', JSON.parse(strigToJson), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
+                    {
+                        auth: {
+                            username: model.contentPerson.pessoa.userName,
+                            password: model.pwd
+                        },
+                    })
+                    .then(resp => {
+                        // model.client.cliente.idCliente = resp.data.idCliente
+                        console.log(resp.data.idCliente)
+                    }).catch(error => {
+                        console.log(error.request);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    })
         }
     },
     computed: {
