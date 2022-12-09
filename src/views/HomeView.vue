@@ -1,32 +1,120 @@
 <template>
-  <div class="home">
-    <div class="container">
-      <button @click="isleft()" class="arrow-left control" aria-label="Previous image">◀</button>
-      <button @click="isRight()" class="arrow-right control" aria-label="Next Image">▶</button>
-      <div class="gallery-wrapper">
-        <div class="gallery">
-
-          <img src="https://source.unsplash.com/random/750x750/?bakery" alt="Beach Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?cookie" alt="Animal Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?cake" alt="Street Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?cheescake" alt="Zoo Image" class="item current-item">
+      <div class="home">
+        <div ref="container" class="keen-slider">
+        <div class="keen-slider__slide number-slide1">
+          <img src="https://source.unsplash.com/random/750x750/?pudding" alt="Beach Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?cakes" alt="Street Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?truffles" alt="Zoo Image" class="item current-item">
+        </div>
+        <div class="keen-slider__slide number-slide2">
+          <img src="https://source.unsplash.com/random/750x750/?caramel" alt="Animal Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?chocolate" alt="Beach Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?cheescake" alt="Animal Image" class="item current-item">
+        </div>
+        <div class="keen-slider__slide number-slide3">
+          <img src="https://source.unsplash.com/random/750x750/?marshmallow" alt="Street Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?gingerbread" alt="Zoo Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?donut" alt="Model Image" class="item current-item">
+        </div>
+        <div class="keen-slider__slide number-slide4">
           <img src="https://source.unsplash.com/random/750x750/?cakes" alt="Model Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?coffee" alt="Model Image" class="item current-item">
-          <img src="https://source.unsplash.com/random/750x750/?bread" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?mousse" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?pie" alt="Model Image" class="item current-item">
+        </div>
+        <div class="keen-slider__slide number-slide5">
+          <img src="https://source.unsplash.com/random/750x750/?mousse" alt="Animal Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?cheescake" alt="Beach Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?gingerbread" alt="Animal Image" class="item current-item">
+        </div>
+        <div class="keen-slider__slide number-slide6">
+          <img src="https://source.unsplash.com/random/750x750/?gingerbread" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?cakes" alt="Model Image" class="item current-item">
+          <img src="https://source.unsplash.com/random/750x750/?chocolate" alt="Model Image" class="item current-item">
         </div>
       </div>
-    </div>
-  </div>
+      </div> 
+      <footer>
+      <div class="main-content">
+        <div class="left box">
+          <h2>Sobre nós</h2>
+          <div class="content">
+            <p>Doces feitos com muito amor <br/> para a sua família! ❤</p>
+          <div class="social">
+            <a href="#"><span class="fab fa-facebook-f"></span></a>
+            <a href="#"><span class="fab fa-twitter"></span></a>
+            <a href="#"><span class="fab fa-instagram"></span></a>
+          </div>
+        </div><!--content-->
+        </div><!--Left box-->
+        <div class="center box">
+          <h2>Contato</h2>
+          <div class="content">
+            <div class="place">
+              <span class="fas fa-map-marker"></span>
+              <span class="text">Rua das Palmeiras, Blumenau</span>
+            </div>
+            <div class="phone">
+              <span class="fas fa-phone"></span>
+              <span class="text">+55 (47) 9 9999-9999</span>
+            </div>
+            <div class="email">
+              <span class="fas fa-envelope"></span>
+              <span class="text">doceria@alegria.com.br</span>
+            </div>
+          </div>
+        </div><!--center-->
+      </div><!--main-content-->
+    </footer>
 </template>
 
 <script>
+import { useKeenSlider } from "keen-slider/vue.es"
+import "keen-slider/keen-slider.min.css"
 // @ is an alias to /src
 
 export default {
-  data(){
+  data() {
     return {
-      currentItem: 1
+      currentItem: 1,
     }
+  },
+  setup() {
+    const [container] = useKeenSlider(
+      {
+        loop: true,
+      },
+      [
+        (slider) => {
+          let timeout
+          let mouseOver = false
+          function clearNextTimeout() {
+            clearTimeout(timeout)
+          }
+          function nextTimeout() {
+            clearTimeout(timeout)
+            if (mouseOver) return
+            timeout = setTimeout(() => {
+              slider.next()
+            }, 2000)
+          }
+          slider.on("created", () => {
+            slider.container.addEventListener("mouseover", () => {
+              mouseOver = true
+              clearNextTimeout()
+            })
+            slider.container.addEventListener("mouseout", () => {
+              mouseOver = false
+              nextTimeout()
+            })
+            nextTimeout()
+          })
+          slider.on("dragStarted", clearNextTimeout)
+          slider.on("animationEnded", nextTimeout)
+          slider.on("updated", nextTimeout)
+        },
+      ]
+    )
+    return { container }
   },
   methods: {
     isleft() {
@@ -76,6 +164,175 @@ export default {
 }
 </script>
 <style>
+.main-content{
+  background-color: #d4a373;
+  color: #e9edc9;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  font-family: 'Poppins', sans-serif;;
+}
+
+.main-content .box{
+  flex-basis:50%;
+  padding: 10px 20px;
+}
+
+.box h2{
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.box .content{
+  margin: 20px 0 0 0;
+  position: relative;
+}
+/* .box .content:after{
+  position: absolute;
+  content: '';
+  width: 15%;
+  height: 2px;
+  background:#ea1538;
+  top: -10px;
+} */
+.left .content .social{
+  margin: 20px 0 0 0;
+}
+/* .box .content:before{
+  position: absolute;
+  content: '';
+  height: 2px;
+  width: 100%;
+  background: #2c3e50;
+  top: 10px;
+
+} */
+.left .content .social a{
+  padding:0 2px;
+}
+.left .content .social a span{
+  width: 40px;
+  height: 40px;
+  background: #e9edc9;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 5px;
+  font-size: 18px;
+  transition: 0.3s;
+} 
+.left .content .social a span:hover{
+  background: #7f5539;
+}
+/* .left .content p{
+  text-align: justify;
+} */
+.center .content .fas{
+  font-size: 15px;
+  background-color: #e9edc9;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.center .content .fas:hover{
+  background-color: #7f5539;
+}
+.center .content .text{
+    font-size: 15px;
+    font-weight: 500;
+    padding-left: 10px;
+    color: #e9edc9;
+}
+.center .content .phone{
+  margin: 10px 0;
+}
+.center .content .msg{
+  margin-top: 10px
+}
+.social{
+  color: #e9edc9;
+}
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #FEFAE0;
+}
+[class^="number-slide"],
+[class*=" number-slide"] {
+  background: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  color: #fff;
+  font-weight: 500;
+  height: 300px;
+  max-height: 100vh;
+}
+
+.number-slide1 {
+  background: rgb(64, 175, 255);
+  background: linear-gradient(
+    128deg,
+    rgba(64, 175, 255, 1) 0%,
+    rgba(63, 97, 255, 1) 100%
+  );
+}
+
+.number-slide2 {
+  background: rgb(255, 75, 64);
+  background: linear-gradient(
+    128deg,
+    rgba(255, 154, 63, 1) 0%,
+    rgba(255, 75, 64, 1) 100%
+  );
+}
+
+.number-slide3 {
+  background: rgb(182, 255, 64);
+  background: linear-gradient(
+    128deg,
+    rgba(182, 255, 64, 1) 0%,
+    rgba(63, 255, 71, 1) 100%
+  );
+  background: linear-gradient(
+    128deg,
+    rgba(189, 255, 83, 1) 0%,
+    rgba(43, 250, 82, 1) 100%
+  );
+}
+
+.number-slide4 {
+  background: rgb(64, 255, 242);
+  background: linear-gradient(
+    128deg,
+    rgba(64, 255, 242, 1) 0%,
+    rgba(63, 188, 255, 1) 100%
+  );
+}
+
+.number-slide5 {
+  background: rgb(255, 64, 156);
+  background: linear-gradient(
+    128deg,
+    rgba(255, 64, 156, 1) 0%,
+    rgba(255, 63, 63, 1) 100%
+  );
+}
+.number-slide6 {
+  background: rgb(64, 76, 255);
+  background: linear-gradient(
+    128deg,
+    rgba(64, 76, 255, 1) 0%,
+    rgba(174, 63, 255, 1) 100%
+  );
+}
 * {
   margin: 0;
   padding: 0;
@@ -91,9 +348,10 @@ h1 {
 .container {
   position: relative;
   padding: 15px;
-  max-width: 2600px;
+  max-width: 500px;
   margin: 0 auto;
 }
+
 
 .gallery-wrapper {
   overflow-x: auto;
@@ -157,8 +415,10 @@ https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .gallery-wrapper {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .cyan {
