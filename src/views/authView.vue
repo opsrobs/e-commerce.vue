@@ -161,11 +161,6 @@ export default {
                         this.$router.push('/bolo')
                         console.log(resp.data)
                     }).catch(resp => alert(resp.body))
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 5f05e9bbe67d7b6e999759f7680d5c8f26186eb4
             }
         },
         handleSignOut() {
