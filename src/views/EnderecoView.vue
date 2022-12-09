@@ -6,7 +6,7 @@
                 <div class="shape"></div>
                 <div class="shape"></div>
             </div>
-            <form @submit.prevent="confirmarCadastro()">
+            <form @submit.prevent="confirmarCadastros()">
                 <label>Cep</label>
                 <input class="inputCep" type="text" v-model="endereco.cep" required placeholder="Cep" id="cep">
 
@@ -49,17 +49,21 @@ export default {
                 nome_estado: 'scc' //valor fixo pra teste, pois não tem input pro nome completo
             },
             city: {
-                nome_city: ''
+                nome_city: '',
+                id_stade: 1,
+                stade: 1
             },
             bairro: {
-                nomeBairro: ''
+                nomeBairro: '',
+                id_city: 1
             },
             endereco: {
                 cep: '',
                 rua: '',
                 complemento: '',
                 numero: '',
-                ativo: true
+                ativo: true,
+                id_bairro: 1 
             }
         }
     },
@@ -81,10 +85,53 @@ export default {
             }).catch(resp => alert(resp.body))
         },
 
-        confirmarCadastro() {
-            alert(this.stade.nome_estado) //tentando de inicio postar só estado
-            axios.post('http://localhost:8080/api/user-address-stade', this.stade).then(resp => {
-                this.$router.push('/bolo')
+        confirmarCadastros() {
+            this.confirmarCadastroStade()
+            this.confirmarCadastroCity()
+            this.confirmarCadastroBairro()
+            this.confirmarCadastroEndereco()
+        },
+
+        confirmarCadastroStade() {
+            axios.post('http://localhost:8080/api/user-address-stade', this.stade, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
+                console.log(resp.data)
+            }
+            ).catch(resp => alert(resp.body))
+        },
+        confirmarCadastroCity() {
+            axios.post('http://localhost:8080/api/user-address-city', this.city, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
+                console.log(resp.data)
+            }
+            ).catch(resp => alert(resp.body))
+        },
+        confirmarCadastroBairro() {
+            axios.post('http://localhost:8080/api/user-address-bairro', this.bairro, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
+                console.log(resp.data)
+            }
+            ).catch(resp => alert(resp.body))
+        },
+        confirmarCadastroEndereco() {
+            axios.post('http://localhost:8080/api/user-address-endereco', this.endereco, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
                 console.log(resp.data)
             }
             ).catch(resp => alert(resp.body))
