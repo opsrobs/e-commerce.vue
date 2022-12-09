@@ -85,7 +85,6 @@ export default defineComponent({
             model.numeroPedido = resp.data.numeroPedido
           }).catch(error => {
             console.log(error.request);
-            console.log(error.response.headers);
           })
     },
     sumValue() {
