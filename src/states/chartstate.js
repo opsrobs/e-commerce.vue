@@ -45,6 +45,7 @@ export default reactive({
             idCliente: null
         }
     },
+    numeroPedido:0,
 
     pedido: {
         data_pedido: null,
@@ -52,12 +53,13 @@ export default reactive({
         valor_total: 11.20,
         valor_frete: 0.0,
         data_entrega: 1654884910,
-        produtos: [],
+        produtos: '',
         // endereco: null, descomentar se tiver o cadastro de endereco
         cliente: {
             idCliente: null
         }
 
-    }
+    }, 
+    totalPedido: null
 
 })

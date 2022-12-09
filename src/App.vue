@@ -21,15 +21,15 @@
                 {{ (p.nomeProduto + ' ' + 'R$' + p.preco_produto) }}
               </li>
             </ul>
-            <Button class="buy" @click="buy(p)">Finalizar Compra</Button>
+            <Button class="buy" @click="buy()">Finalizar Compra</Button>
           </Sidebar>
           <div class="icons">
             <a href="#" class="notification">
-            <span id="cart" class="material-icons" @click="abrirSidenav">shopping_cart</span>
-            <span class="badge">{{productsCount}}</span>  
+              <span id="cart" class="material-icons" @click="abrirSidenav">shopping_cart</span>
+              <span class="badge">{{ productsCount }}</span>
             </a>
             <span class="material-icons" @click="login">account_circle</span>
-            
+
           </div>
           <!--<button type="button">Subscribe</button>-->
         </nav>
@@ -42,6 +42,7 @@
 import Sidebar from 'primevue/sidebar';
 import 'primeicons/primeicons.css';
 import { defineComponent, reactive, ref } from 'vue';
+import axios from 'axios';
 import model from './states/chartstate';
 import imagem from '../src/assets/imagem.png';
 
@@ -53,10 +54,146 @@ export default defineComponent({
     },
     abrirSidenav() {
       this.visibleLeft = true; console.log("deveria funcionar")
+      this.cadPedido(model.cards)
     },
-    buy(product) {
-      this.$router.push(`/payment/${product.id}`)
-    }
+    buy() {
+      console.log(JSON.stringify(model.shopInfo.products))
+      this.atualizarProduto(model.numeroPedido)
+    },
+    atualizarProduto(nPedido) {
+      this.pedido.numeroPedido = nPedido
+      model.shopInfo.products.forEach(product => {
+        product.pedido = this.pedido,
+        this.postProduto(product)
+          console.log(JSON.stringify(product))
+      })
+    },
+    postProduto(produto){
+      let id = produto.id
+      let produtoJSON = JSON.stringify(produto)
+      console.log(JSON.parse(produtoJSON))
+      axios.post(`localhost:8080/api/user-products/produto/${id}`, JSON.parse(produtoJSON),
+          {
+            auth: {
+              username: model.contentPerson.pessoa.userName,
+              password: model.pwd
+            },
+          })
+          .then(resp => {
+            console.log(resp.data.numeroPedido)
+            console.log('Atualizou o produto ' +  resp.data.numeroPedido )
+            model.numeroPedido = resp.data.numeroPedido
+          }).catch(error => {
+            console.log(error.request);
+            console.log(error.response.headers);
+          })
+    },
+    sumValue() {
+      let soma
+      for (var i = 0; i < model.shopInfo.products.forEach.length; i++) {
+        soma = model.shopInfo.products.preco_produto
+        console.log(soma);
+        // more statements
+      }
+      return soma
+
+    },
+    toDate(inputDate) {
+      const str = inputDate
+      const [day, month, year] = str.split('/');
+      const date = new Date(+year, month - 1, +day);
+      console.log(date)
+      return date.getTime()
+    },
+    dateToDay() {
+
+      var today = new Date();
+      var date = today.getDate(+3) + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = date // + ' ' + time;
+
+      return dateTime
+    },
+    cadPedido() {
+      model.pedido.data_pedido = this.toDate(this.dateToDay()),
+        model.pedido.status = 'PENDENTE',
+        model.pedido.valor_total = model.totalPedido
+      console.log(model.pedido.valor_total)
+      model.pedido.valor_frete = 0.0,
+        model.pedido.data_entrega = this.toDate(this.dateToDay()),
+        model.pedido.produtos = model.shopInfo.products,
+        model.pedido.cliente.idCliente = model.client.cliente.idCliente
+      console.log(model.client.cliente.idCliente)
+      // console.log(this.toDate(this.dateToDay()))
+      console.log(JSON.stringify(model.pedido))
+      console.log('--------------------------------')
+      this.criarPedido()
+    },
+    async criarPedido() {
+      let strigToJson = JSON.stringify(this.model.pedido)
+      if (model.pedido.status === 'PENDENTE'
+        && model.numeroPedido != null
+        && model.numeroPedido > 0) {
+        console.log(model.pedido.status)
+        console.log(model.numeroPedido)
+        this.atualizarPedido(model.numeroPedido)
+      } else {
+        console.log(JSON.parse(strigToJson))
+        await axios.post('http://localhost:8080/api/user-pedido', JSON.parse(strigToJson),
+          {
+            auth: {
+              username: model.contentPerson.pessoa.userName,
+              password: model.pwd
+            },
+          })
+          .then(resp => {
+            console.log(resp.data.numeroPedido)
+            model.numeroPedido = resp.data.numeroPedido
+          }).catch(error => {
+            console.log(error.request);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          })
+
+      }
+    },
+    atualizarPedido(id) {
+      let strigToJson = JSON.stringify(this.model.pedido)
+      axios.put(`http://localhost:8080/api/user-pedido/pedido/${id}`, JSON.parse(strigToJson),
+        {
+          auth: {
+            username: model.contentPerson.pessoa.userName,
+            password: model.pwd
+          },
+        })
+        .then(resp => {
+          // model.client.cliente.idCliente = resp.data.idCliente
+          console.log(resp.data)
+        }).catch(error => {
+          console.log(error.request);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        })
+    },
+    buscarPedidos(id) {
+      axios.get(`http://localhost:8080/api/user-pedido/${id}`,
+        {
+          auth: {
+            username: model.contentPerson.pessoa.userName,
+            password: model.pwd
+          },
+        })
+        .then(resp => {
+          // model.client.cliente.idCliente = resp.data.idCliente
+          console.log(resp.data.numeroPedido)
+          model.numeroPedido = resp.data.numeroPedido
+        }).catch(error => {
+          console.log(error.request);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        })
+
+    },
   },
   setup() {
     const items = reactive(
@@ -74,7 +211,10 @@ export default defineComponent({
       model,
       items,
       visibleLeft,
-      imagem
+      imagem,
+      pedido: {
+        numeroPedido: null
+      }
     }
   },
   components: {
@@ -107,9 +247,11 @@ export default defineComponent({
   background: #7f5539;
   color: white;
 }
-#logomarca{
+
+#logomarca {
   margin-right: 50px;
 }
+
 #cart {
   margin-right: 25px;
 }
