@@ -100,7 +100,7 @@ export default {
                     // this.user.last_name = result._tokenResponse.lastName
                     this.user.userName = result._tokenResponse.email
                     // verificar se há ou não username. 
-                    // Caso não haja, criar método para validar quak campo deve ser apresentado
+                    // Caso não haja, criar método para validar qual campo deve ser apresentado
 
                     //this.user = result.user.displayName;
                     this.isVisible = false

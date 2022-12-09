@@ -54,39 +54,43 @@ export default defineComponent({
     },
     abrirSidenav() {
       this.visibleLeft = true; console.log("deveria funcionar")
+      console.log(JSON.stringify(model.numeroPedido))
+
       this.cadPedido(model.cards)
     },
     buy() {
       console.log(JSON.stringify(model.shopInfo.products))
-      this.atualizarProduto(model.numeroPedido)
+      console.log(model.numeroPedido)
+      this.$router.push(`/payment/${model.numeroPedido}`)
+      // this.$router.push(`/payment/63`)
     },
     atualizarProduto(nPedido) {
       this.pedido.numeroPedido = nPedido
       model.shopInfo.products.forEach(product => {
         product.pedido = this.pedido,
-        this.postProduto(product)
+        // this.postProduto(product)
           console.log(JSON.stringify(product))
       })
     },
-    postProduto(produto){
-      let id = produto.id
-      let produtoJSON = JSON.stringify(produto)
-      console.log(JSON.parse(produtoJSON))
-      axios.post(`localhost:8080/api/user-products/produto/${id}`, JSON.parse(produtoJSON),
-          {
-            auth: {
-              username: model.contentPerson.pessoa.userName,
-              password: model.pwd
-            },
-          })
-          .then(resp => {
-            console.log(resp.data.numeroPedido)
-            console.log('Atualizou o produto ' +  resp.data.numeroPedido )
-            model.numeroPedido = resp.data.numeroPedido
-          }).catch(error => {
-            console.log(error.request);
-          })
-    },
+    // postProduto(produto){
+    //   let id = produto.id
+    //   let produtoJSON = JSON.stringify(produto)
+    //   console.log(JSON.parse(produtoJSON))
+    //   axios.post(`localhost:8080/api/user-products/produto/${id}`, JSON.parse(produtoJSON),
+    //       {
+    //         auth: {
+    //           username: model.contentPerson.pessoa.userName,
+    //           password: model.pwd
+    //         },
+    //       })
+    //       .then(resp => {
+    //         console.log(resp.data.numeroPedido)
+    //         console.log('Atualizou o produto ' +  resp.data.numeroPedido )
+    //         model.numeroPedido = resp.data.numeroPedido
+    //       }).catch(error => {
+    //         console.log(error.request);
+    //       })
+    // },
     sumValue() {
       let soma
       for (var i = 0; i < model.shopInfo.products.forEach.length; i++) {
@@ -125,16 +129,15 @@ export default defineComponent({
       console.log(model.client.cliente.idCliente)
       // console.log(this.toDate(this.dateToDay()))
       console.log(JSON.stringify(model.pedido))
-      console.log('--------------------------------')
+      console.log('--------------------------------' + model.pedido.numeroPedido)
       this.criarPedido()
     },
     async criarPedido() {
       let strigToJson = JSON.stringify(this.model.pedido)
-      if (model.pedido.status === 'PENDENTE'
-        && model.numeroPedido != null
-        && model.numeroPedido > 0) {
+      if (model.pedido.status === 'PENDENTE' && model.numeroPedido != null && model.numeroPedido > 0) {
         console.log(model.pedido.status)
         console.log(model.numeroPedido)
+        console.log('--')
         this.atualizarPedido(model.numeroPedido)
       } else {
         console.log(JSON.parse(strigToJson))
@@ -158,6 +161,7 @@ export default defineComponent({
     },
     atualizarPedido(id) {
       let strigToJson = JSON.stringify(this.model.pedido)
+      console.log(strigToJson)
       axios.put(`http://localhost:8080/api/user-pedido/pedido/${id}`, JSON.parse(strigToJson),
         {
           auth: {

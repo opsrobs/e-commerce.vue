@@ -2,13 +2,13 @@
   <div>
 
 
-    
+
 
     <div v-if="!paidFor">
       <h1>{{ products.nomeProduto }}</h1>
-      <h1>{{ products.preco_produto + ' R$' }}</h1>
+      <h1>{{ products + ' R$' }}</h1>
 
-      <p>{{ product.description }}</p>
+      <!-- <p>{{ product.description }}</p> -->
 
     </div>
 
@@ -18,11 +18,11 @@
 
     <div ref="paypal"></div>
 
-    
-    
+
+
   </div>
 
-  
+
 </template>
   
 <script>
@@ -62,18 +62,21 @@ export default {
       let username = 'robson.flavio'
       let password = 'senha123'
       axios.get(
-        `http://localhost:8080/api/user-products/${id}`,
+        `http://localhost:8080/api/user-pedido/${id}`,
+        // `http://localhost:8080/api/user-pedido/63`,
         {
           auth: {
             username: username,
             password: password
           },
         })
-        .then(resp => { this.products = resp.data, console.log(resp.data) })
+        .then(resp => { this.products = resp.data.valor_total, console.log(resp.data), console.log(JSON.stringify(this.products)) })
         .catch(error => {
           alert(error)
           this.$router.push("/bolo")
         })
+
+      this.setPurchases(this.products, this.products.produto)
     }
 
 
@@ -93,10 +96,11 @@ export default {
             return actions.order.create({
               purchase_units: [
                 {
-                  description: this.products.descProduto,
+                  // description: this.products.descProduto,
+                  description: this.product.description,
                   amount: {
                     currency_code: "USD",
-                    value: this.products.preco_produto
+                    value: this.products
                   }
                 }
               ]
@@ -112,6 +116,32 @@ export default {
           }
         })
         .render(this.$refs.paypal);
+    },
+    findOcc(arr, key) {
+      let arr2 = [];
+
+      arr.forEach((x) => {
+        if (arr2.some((val) => { return val[key] == x[key] })) {
+
+          arr2.forEach((k) => {
+            if (k[key] === x[key]) {
+              k["occurrence"]++
+            }
+          })
+
+        } else {
+          let a = {}
+          a[key] = x[key]
+          a["occurrence"] = 1
+          arr2.push(a);
+        }
+      })
+
+      return arr2
+    },
+    setPurchases(array, key) {
+      console.log(array, key)
+
     }
   }
 };
