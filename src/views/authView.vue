@@ -117,7 +117,8 @@ export default {
             } else
                 return this.isValid = true
         },
-        login() {
+        async login() {
+            console.log(this.user.userName + '  ' + this.user.password)
             axios.get('http://localhost:8080/e-commerce/',
                 {
                     auth: {
@@ -128,6 +129,7 @@ export default {
                 .then(resp => {
                     console.log(resp.data)
                     userChart.contentPerson.pessoa.userName = this.user.userName
+                    userChart.contentPerson.pessoa.userID= resp.data.userID
                     userChart.pwd = this.user.password
                     this.mountUser(this.user.userName)
                     console.log(userChart.pwd)
@@ -135,10 +137,11 @@ export default {
 
                     // console.log(this.user.userName)
                 }).catch((error => console.log(error)))
+                console.log('<>')
         },
-        async mountUser(userName) {
+        mountUser(userName) {
             console.log(userChart.contentPerson.pessoa.userName)
-            await axios.get(`http://localhost:8080/e-commerce/user/${userName}`,
+             axios.get(`http://localhost:8080/e-commerce/user/${userName}`,
                 {
                     auth: {
                         username: userChart.contentPerson.pessoa.userName,
@@ -154,11 +157,12 @@ export default {
             this.isVisible = false
         },
         new_user() {
+            console.log(this.user)
             if (this.isValid) {
                 axios.post('http://localhost:8080/e-commerce/new-user',
                     this.user)
                     .then(resp => {
-                        this.$router.push('/bolo')
+                        this.$router.push('/login')
                         console.log(resp.data)
                     }).catch(resp => alert(resp.body))
             }
@@ -179,7 +183,7 @@ export default {
                     //const user = result.user;
                     console.log(result)
                     console.log(result._tokenResponse)
-                    this.user = result.user.displayName;
+                    this.user.nome = result.user.displayName;
                     this.isVisible = false
                 }).catch((error) => {
                     console.log(error)
@@ -200,7 +204,7 @@ export default {
         },
         checkTittle() {
             return this.isVisible ? 'Login Here' : 'Create account'
-        },
+        }
     },
     components: {
     }

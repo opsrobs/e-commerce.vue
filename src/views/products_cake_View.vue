@@ -66,6 +66,7 @@ export default defineComponent({
                 console.log(resp.data)
 
             }).catch(error => console.log(error))
+
     },
     setup() {
         const check = () => {
@@ -130,7 +131,7 @@ export default defineComponent({
             lengthDescription,
             model,
             value: null,
-            pessoa:{
+            pessoa: {
                 usuario: '',
             },
             pedido: {
@@ -150,17 +151,13 @@ export default defineComponent({
         pushToSide(p) {
             this.salvarProduto(p)
             model.shopInfo.products.push(p)
-            this.createClient()
-            console.log(model.contentPerson.pessoa)
+            this.getIdCliente(model.contentPerson.pessoa.userID)
+            this.sumValue(p)
+            // this.createClient(model.contentPerson.pessoa.userID)
+            // this.createClient()
+            // console.log('<---------------------------------------------------------------->')
             // this.cadPedido(p)
-
-        },
-        sumValue(tot) {
-            let valor = tot
-            this.value += valor
-            console.log(tot)
-            console.log(this.value)
-            return this.value
+            // console.log(JSON.stringify(this.model.contentPerson))
 
         },
         salvarProduto(p) {
@@ -170,42 +167,46 @@ export default defineComponent({
             // Adiciona contentPerson.pessoa ao cadastro
             lista_produtos.push(p);
 
-            // Salva a lista alterada    
+            // Salva a lista alterada
             localStorage.setItem("lista-produtos", JSON.stringify(lista_produtos));
             console.log('Salva com sucesso.');
         },
-        toDate(inputDate) {
-            const str = inputDate
-            const [day, month, year] = str.split('/');
-            const date = new Date(+year, month - 1, +day);
-            console.log(date)
-            return date.getTime()
-        },
-        cadPedido(p) {
-            this.pedido.data_pedido = this.toDate(this.dateToDay()),
-                this.pedido.status = 'PENDENTE',
-                this.pedido.valor_total = this.sumValue(p.preco_produto),
-                this.pedido.valor_frete = 0.0,
-                this.pedido.data_entrega = this.toDate(this.dateToDay()),
-                this.pedido.produtos.push(p),
-                console.log(this.toDate(this.dateToDay()))
-            console.log(JSON.stringify(this.pedido))
-        },
-        dateToDay() {
-            var today = new Date();
-            var date = today.getDate(+3) + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-            //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            var dateTime = date // + ' ' + time;
+        createClient(id) {
+            this.getIdCliente(id)
+            if (model.client.cliente.idCliente === null) {
+                let personDataString = JSON.stringify(model.contentPerson)
+                console.log(JSON.stringify(model.contentPerson))
+                console.log(JSON.parse(personDataString))
+                console.log(JSON.stringify(model.pwd))
+                axios.post('http://localhost:8080/api/user-cliente', JSON.parse(personDataString), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
+                    {
+                        auth: {
+                            username: model.contentPerson.pessoa.userName,
+                            password: model.pwd
+                        },
+                    })
+                    .then(resp => {
+                        model.client.cliente.idCliente = resp.data.idCliente
+                        console.log(resp.data.idCliente)
+                    }).catch(error => {
+                        console.log(error.request);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    })
 
-            return dateTime
+            }
+            else {
+                console.log(model.client.cliente.idCliente)
+                return model.client.cliente.idCliente
+            }
         },
-        createClient() {
-            // this.model.contentPerson.pessoa
-            let personDataString = JSON.stringify(this.model.contentPerson)
-            console.log(JSON.stringify(this.model.contentPerson))
-            console.log(JSON.parse(personDataString))
-            console.log(JSON.stringify(this.model.pwd))
-            axios.post('http://localhost:8080/api/user-cliente',JSON.parse(personDataString), // adicionar "contentPerson.pessoa:{ model.contentPerson.pessoa}"
+    sumValue(p) {
+      console.log(p.preco_produto)
+      return model.totalPedido += p.preco_produto 
+
+    },
+        async getIdCliente(id) {
+            await axios.get(`http://localhost:8080/api/user-cliente/user/${id}`,
                 {
                     auth: {
                         username: model.contentPerson.pessoa.userName,
@@ -213,14 +214,13 @@ export default defineComponent({
                     },
                 })
                 .then(resp => {
-                    // this.$router.push('/bolo')
-                    console.log(resp.data)
-                }).catch(error => {
-                    console.log(error.request);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                })
-        },
+                    model.client.cliente.idCliente = resp.data.idCliente
+                    console.log(model.contentPerson.pessoa)
+                    console.log(model.client.cliente.idCliente)
+                }).catch(resp => console.log(resp))
+        }
+
+
     },
     computed: {
         productsCount() {

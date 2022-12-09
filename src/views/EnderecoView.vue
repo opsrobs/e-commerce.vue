@@ -1,46 +1,40 @@
 <template>
     <div>
+
         <body>
             <div class="background">
                 <div class="shape"></div>
                 <div class="shape"></div>
             </div>
-            <form>
+            <form @submit.prevent="confirmarCadastros()">
                 <label>Cep</label>
-                <input class="inputCep" type="text" v-model="endereco.cep" required
-                    placeholder="Cep" id="cep">
+                <input class="inputCep" type="text" v-model="endereco.cep" required placeholder="Cep" id="cep">
 
                 <button class="buttonCep" @click="getCepInfo()">SEARCH</button>
 
                 <label>UF</label>
-                <input class="inputReadOnly" type="text" v-model="stade.uf" required
-                    id="uf" readonly="readonly">
-                    
-                <label>Cidade</label>
-                <input class="inputReadOnly" type="text" v-model="city.nome_city" 
-                    id="city" readonly="readonly">
-                    
-                <label>Bairro</label>
-                <input class="inputReadOnly" type="text" v-model="bairro.nomeBairro" required
-                     id="bairro" readonly="readonly">
-                    
-                <label>Rua</label>
-                <input type="text" v-model="endereco.rua" required
-                    placeholder="Rua" id="rua">
-                    
-                <label>Número</label>
-                <input type="text" v-model="endereco.numero" required
-                    placeholder="Número" id="numero">
-                    
-                <label>Complemento</label>
-                <input type="text" v-model="endereco.complemento" required
-                   placeholder="Complemento" id="complemento">
+                <input class="inputReadOnly" type="text" v-model="stade.uf" required id="uf">
 
-                <button class="buttonConfirmar" @click="confirmarCadastro">CONFIRMAR</button>
+                <label>Cidade</label>
+                <input class="inputReadOnly" type="text" v-model="city.nome_city" id="city">
+
+                <label>Bairro</label>
+                <input class="inputReadOnly" type="text" v-model="bairro.nomeBairro" required id="bairro">
+
+                <label>Rua</label>
+                <input type="text" v-model="endereco.rua" required placeholder="Rua" id="rua">
+
+                <label>Número</label>
+                <input type="text" v-model="endereco.numero" required placeholder="Número" id="numero">
+
+                <label>Complemento</label>
+                <input type="text" v-model="endereco.complemento" required placeholder="Complemento" id="complemento">
+
+                <button class="buttonConfirmar">CONFIRMAR</button>
             </form>
         </body>
     </div>
-  
+
 </template>
 
 <script>
@@ -50,51 +44,97 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            stade:{
+            stade: {
                 uf: '',
-                nome_estado: ''                
+                nome_estado: 'scc' //valor fixo pra teste, pois não tem input pro nome completo
             },
-            city:{
-                nome_city: ''
+            city: {
+                nome_city: '',
+                id_stade: 1,
+                stade: 1
             },
-            bairro:{
-                nomeBairro: ''
+            bairro: {
+                nomeBairro: '',
+                id_city: 1
             },
-            endereco:{
+            endereco: {
                 cep: '',
                 rua: '',
                 complemento: '',
                 numero: '',
-                ativo: true
-            }      
+                ativo: true,
+                id_bairro: 1 
+            }
         }
     },
     mounted() {
-        
+
     },
 
     methods: {
-        getCepInfo(){
+        getCepInfo() {
             axios.get(`https://viacep.com.br/ws/${this.endereco.cep}/json/`).then(resp => {
                 /*alert(resp)
                 console.log(resp.data)*/
-                
-                this.stade.uf           =  resp.data.uf
-                this.city.nome_city     =  resp.data.localidade
-                this.bairro.nomeBairro  =  resp.data.bairro
-                this.endereco.rua       =  resp.data.logradouro
-                this.endereco.cep       =  resp.data.cep
+
+                this.stade.uf = resp.data.uf
+                this.city.nome_city = resp.data.localidade
+                this.bairro.nomeBairro = resp.data.bairro
+                this.endereco.rua = resp.data.logradouro
+                this.endereco.cep = resp.data.cep
             }).catch(resp => alert(resp.body))
         },
 
-        confirmarCadastro(){
-            /*axios.post('http://localhost:8080/e-commerce/new-user',
-                        this.user).then(resp => 
-                        {*/
-                            this.$router.push('/bolo')
-                           /* console.log(resp.data)
-                       }
-                    ).catch(resp => alert(resp.body))*/
+        confirmarCadastros() {
+            this.confirmarCadastroStade()
+            this.confirmarCadastroCity()
+            this.confirmarCadastroBairro()
+            this.confirmarCadastroEndereco()
+        },
+
+        confirmarCadastroStade() {
+            axios.post('http://localhost:8080/api/user-address-stade', this.stade, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
+                console.log(resp.data)
+            }
+            ).catch(resp => alert(resp.body))
+        },
+        confirmarCadastroCity() {
+            axios.post('http://localhost:8080/api/user-address-city', this.city, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
+                console.log(resp.data)
+            }
+            ).catch(resp => alert(resp.body))
+        },
+        confirmarCadastroBairro() {
+            axios.post('http://localhost:8080/api/user-address-bairro', this.bairro, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
+                console.log(resp.data)
+            }
+            ).catch(resp => alert(resp.body))
+        },
+        confirmarCadastroEndereco() {
+            axios.post('http://localhost:8080/api/user-address-endereco', this.endereco, {
+                auth: {
+                    username: 'robson',
+                    password: 'senha123'
+                },
+            }).then(resp => {
+                console.log(resp.data)
+            }
+            ).catch(resp => alert(resp.body))
         }
     }
 }
@@ -171,15 +211,15 @@ input {
     font-weight: 300;
 }
 
-.inputCep{
+.inputCep {
     width: 60%;
 }
 
-.inputReadOnly{
+.inputReadOnly {
     background-color: rgba(235, 233, 233, 0.47);
 }
 
-.buttonCep{
+.buttonCep {
     background-color: #dadebd;
     border-radius: 10%;
     width: 36%;
@@ -188,7 +228,7 @@ input {
     border-color: #a9ac90;
 }
 
-.buttonConfirmar{
+.buttonConfirmar {
     background-color: #dadebd;
     border-radius: 3%;
     width: 100%;
