@@ -116,7 +116,7 @@ export default defineComponent({
             if (text.length < 5) {
                 return text
             } else {
-                return text.substring(0, 8) + "..."
+                return text.substring(0, 14) + "..."
             }
         }
         // const productsCount=computed(

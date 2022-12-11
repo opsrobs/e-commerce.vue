@@ -17,7 +17,7 @@
           <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
             <h2 id="tProduto">Produtos</h2>
             <ul v-for="p in model.shopInfo.products" :key="p.id_Produto">
-              <li>
+              <li class="prodsid">
                 {{ (p.nomeProduto + ' ' + 'R$' + p.preco_produto) }}
               </li>
             </ul>
@@ -231,6 +231,10 @@ export default defineComponent({
 })
 </script>
 <style>
+.prodsid{
+  color:#d4a373;
+}
+
 .notification {
   color: white;
   text-decoration: none;

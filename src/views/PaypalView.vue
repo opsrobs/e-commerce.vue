@@ -27,6 +27,8 @@
   
 <script>
 import axios from 'axios'
+import model from './../states/chartstate'
+
 
 // import image from "../assets/lamp.png"
 export default {
@@ -76,7 +78,7 @@ export default {
           this.$router.push("/bolo")
         })
 
-      this.setPurchases(this.products, this.products.produto)
+      this.setPurchases()
     }
 
 
@@ -109,6 +111,7 @@ export default {
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
             this.paidFor = true;
+            this.setPurchases,
             console.log(order);
           },
           onError: err => {
@@ -139,8 +142,8 @@ export default {
 
       return arr2
     },
-    setPurchases(array, key) {
-      console.log(array, key)
+    setPurchases() {
+      model.shopInfo.products = []
 
     }
   }
