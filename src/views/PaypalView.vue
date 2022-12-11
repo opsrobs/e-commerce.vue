@@ -1,15 +1,22 @@
 <template>
   <div>
+    <div class="main " v-if="!paidFor">
+      <div class="center">
+        <div v-for="c in products" :key="c.id">
+          <div>
+            <span>{{ c.nomeProduto }}
+              <span class="text-muted">
+                {{ ' R$ ' + c.preco_produto }}
 
-
-
-
-    <div v-if="!paidFor">
-      <h1>{{ products.nomeProduto }}</h1>
-      <h1>{{ products + ' R$' }}</h1>
-
-      <!-- <p>{{ product.description }}</p> -->
-
+              </span>
+            </span>
+          </div>
+        </div>
+        <row class="price-total">{{ 'Total' + ': ' }}</row>
+        <row class="price-total">
+          {{ total + ' R$' }}
+        </row>
+      </div>
     </div>
 
     <div v-if="paidFor">
@@ -39,6 +46,8 @@ export default {
       products: [],
       loaded: false,
       paidFor: false,
+      total: null,
+      count: [],
       product: {
         price: 777.77,
         description: "leg lamp from that one movie",
@@ -46,21 +55,14 @@ export default {
       }
     }
   },
-
-  // data: function () {
-  //   return {
-  //     loaded: false,
-  //     paidFor: false,
-  //     product: {
-  //       price: 777.77,
-  //       description: "leg lamp from that one movie",
-  //       img: "./assets/lamp.jpg"
-  //     }
-  //   };
-  // },
   mounted: function () {
     const id = this.$route.params.id
     if (id) {
+      this.products.forEach(element => {
+        this.count[element] = (this.count[element] || 0) + 1;
+      })
+      console.log(this.count)
+
       let username = 'robson.flavio'
       let password = 'senha123'
       axios.get(
@@ -72,7 +74,10 @@ export default {
             password: password
           },
         })
-        .then(resp => { this.products = resp.data.valor_total, console.log(resp.data), console.log(JSON.stringify(this.products)) })
+        .then(resp => {
+          this.products = resp.data.produto, this.total = resp.data.valor_total,
+            console.log(resp.data), console.log(JSON.stringify(this.products))
+        })
         .catch(error => {
           alert(error)
           this.$router.push("/bolo")
@@ -112,7 +117,7 @@ export default {
             const order = await actions.order.capture();
             this.paidFor = true;
             this.setPurchases,
-            console.log(order);
+              console.log(order);
           },
           onError: err => {
             console.log(err);
@@ -139,17 +144,29 @@ export default {
           arr2.push(a);
         }
       })
-
+      console.log(arr2)
       return arr2
     },
     setPurchases() {
-      model.shopInfo.products = []
+      return model.shopInfo.products
 
     }
   }
 };
 </script>
 <style>
+.main {
+  margin-top: 15px;
+}
+
+
+
+.price-total {
+  width: 50%;
+  float: left;
+  padding: 15px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -169,7 +186,6 @@ h1 {
 
 
 .card-group {
-  border: 1px solid red;
   height: auto;
   /* alterar para 500px caso os cards fiquem de tamanhos diferentes */
   width: 300px;
@@ -182,5 +198,12 @@ h1 {
 
 .card-img-top {
   padding: 3px;
+}
+
+.center {
+  border: 2px outset;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
 }
 </style>

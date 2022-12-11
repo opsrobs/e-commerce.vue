@@ -64,7 +64,7 @@ export default defineComponent({
     buy() {
       console.log(JSON.stringify(model.shopInfo.products))
       console.log(model.numeroPedido)
-      this.$router.push(`/payment/21`)
+      this.$router.push(`/payment/22`)
       // this.$router.push(`/payment/${model.numeroPedido}`)
       this.visibleLeft = false;
       // this.$router.push(`/payment/63`)
