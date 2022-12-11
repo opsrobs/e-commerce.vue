@@ -104,7 +104,6 @@ export default {
 
                     //this.user = result.user.displayName;
                     this.isVisible = false
-                    alert(this.checkTittle())
                 }).catch((error) => {
                     console.log(error)
                 });
