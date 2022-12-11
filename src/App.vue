@@ -18,6 +18,7 @@
             <h2 id="tProduto">Produtos</h2>
             <ul class="cart_list" v-for="p in model.shopInfo.products" :key="p.id_Produto">
               <span class="prodsid">
+                <img :src="p.urlimagem" alt="Card image cap" width="50" height="50">
                 {{ (p.nomeProduto + ' ' + 'R$' + p.preco_produto) }}
                 <span @click="removeIten(p)" class="material-icons">
                   delete
