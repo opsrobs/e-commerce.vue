@@ -16,10 +16,13 @@
           </ul>
           <Sidebar id="sidebar" v-model:visible="visibleLeft" position="right">
             <h2 id="tProduto">Produtos</h2>
-            <ul v-for="p in model.shopInfo.products" :key="p.id_Produto">
-              <li class="prodsid">
+            <ul class="cart_list" v-for="p in model.shopInfo.products" :key="p.id_Produto">
+              <span class="prodsid">
                 {{ (p.nomeProduto + ' ' + 'R$' + p.preco_produto) }}
-              </li>
+                <span @click="removeIten(p)" class="material-icons">
+                  delete
+                </span>
+              </span>
             </ul>
             <Button class="buy" @click="buy()">Finalizar Compra</Button>
           </Sidebar>
@@ -56,19 +59,25 @@ export default defineComponent({
       this.visibleLeft = true; console.log("deveria funcionar")
       console.log(JSON.stringify(model.numeroPedido))
 
-      this.cadPedido(model.cards)
+      // this.cadPedido(model.cards)
     },
     buy() {
       console.log(JSON.stringify(model.shopInfo.products))
       console.log(model.numeroPedido)
-      this.$router.push(`/payment/${model.numeroPedido}`)
+      this.$router.push(`/payment/21`)
+      // this.$router.push(`/payment/${model.numeroPedido}`)
+      this.visibleLeft = false;
       // this.$router.push(`/payment/63`)
+    },
+    removeIten(p){
+      console.log(model.shopInfo.products)
+      model.shopInfo.products.splice(model.shopInfo.products.indexOf(p), 1);
     },
     atualizarProduto(nPedido) {
       this.pedido.numeroPedido = nPedido
       model.shopInfo.products.forEach(product => {
         product.pedido = this.pedido,
-        // this.postProduto(product)
+          // this.postProduto(product)
           console.log(JSON.stringify(product))
       })
     },
@@ -231,8 +240,14 @@ export default defineComponent({
 })
 </script>
 <style>
-.prodsid{
-  color:#d4a373;
+.prodsid {
+  color: #d4a373;
+}
+
+.cart_list .material-icons{
+  justify-content: center;
+  font-size: 28px;
+  vertical-align: -8px
 }
 
 .notification {
@@ -286,7 +301,7 @@ export default defineComponent({
   font-size: 28px;
   /* Preferred icon size */
   display: inline-block;
-  line-height: 1;
+  line-height: 0;
   text-transform: none;
   letter-spacing: normal;
   word-wrap: normal;
